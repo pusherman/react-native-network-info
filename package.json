@@ -1,0 +1,22 @@
+{
+  "name": "react-native-network-info",
+  "version": "0.1.0",
+  "description": "Get local network information",
+  "main": "NetworkInfo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:pusherman/react-native-network-info.git"
+  },
+  "keywords": [
+    "react-component",
+    "react-native",
+    "ios",
+    "network",
+    "lan"
+  ],
+  "author": "Corey Wilson <corey@eastcodes.com> (https://github.com/powerfulninja)",
+  "license": "MIT"
+}
