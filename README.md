@@ -35,3 +35,7 @@ NetworkInfo.getIPAddress(ip => {
 
 ```
 
+## Dev Notes
+Notes on how this package was made can be [found here](http://eastcodes.com/packaging-and-sharing-react-native-modules "Packaging and Sharing React Native Modules").
+
+
