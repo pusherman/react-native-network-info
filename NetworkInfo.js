@@ -1,6 +1,6 @@
 'use strict';
 
-var RNNetworkInfo = require('NativeModules').RNNetworkInfo;
+var RNNetworkInfo = require('react-native').NativeModules.RNNetworkInfo;
 
 var NetworkInfo = {
   getSSID(ssid) {
