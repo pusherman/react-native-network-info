@@ -9,6 +9,10 @@ var NetworkInfo = {
 
   getIPAddress(ip) {
     RNNetworkInfo.getIPAddress(ip);
+  },
+
+  getNetworkStatus(status) {
+    RNNetworkInfo.getNetworkStatus(status);
   }
 };
 
