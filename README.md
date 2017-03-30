@@ -43,8 +43,9 @@ dependencies {
 
 import com.pusherman.networkinfo.RNNetworkInfoPackage; // <--- IMPORT
 
-public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
+public class MainApplication extends Application implements ReactApplication {
 	...
+
 
     @Override
     protected List<ReactPackage> getPackages() {
@@ -55,7 +56,10 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
 	      ...
       );
     }
-  };
+    
+ ...
+ 
+ };
 ```
 
 ## Examples
