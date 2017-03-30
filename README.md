@@ -2,73 +2,76 @@
 
 React Native library for getting information about the devices network
 
-## Usage
-
-First you need to install react-native-network-info:
+## Installation
 
 ```javascript
 npm install react-native-network-info --save
 ```
+or
+
+```javascript
+yum add react-native-network-info
+```
 
 ### `iOS`
 
-In XCode, in the project navigator, right click Libraries ➜ Add Files to [your project's name] Go to node_modules ➜ react-native-network-info and add the .xcodeproj file
+1. In XCode, in the project navigator, right click Libraries ➜ Add Files to [your project's name]
 
-In XCode, in the project navigator, select your project. Add the lib*.a from the network-info project to your project's Build Phases ➜ Link Binary With Libraries Click .xcodeproj file you added before in the project navigator and go the Build Settings tab. Make sure 'All' is toggled on (instead of 'Basic'). Look for Header Search Paths and make sure it contains both $(SRCROOT)/../../react-native/React and $(SRCROOT)/../../React - mark both as recursive.
+2. Go to node_modules ➜ react-native-network-info and add the .xcodeproj file
+
+3. Add `RNNetworkInfo.a` to `Build Phases -> Link Binary With Libraries`
 
 Run your project (Cmd+R)
 
 ### `Android`
 
-* `android/settings.gradle`
+1. Add the following lines to `android/settings.gradle`:
+    ```gradle
+    include ':react-native-network-info'
+    project(':react-native-network-info').projectDir = new File(settingsDir, '../node_modules/react-native-network-info/android')
+    ```
 
-```gradle
-...
-include ':react-native-network-info'
-project(':react-native-network-info').projectDir = new File(settingsDir, '../node_modules/react-native-network-info/android')
-```
-* `android/app/build.gradle`
-
-```gradle
-dependencies {
-	...
-	compile project(':react-native-network-info')
-}
-```
-
-* register module (in MainActivity.java)
-
-```java
-...
-
-import com.pusherman.networkinfo.RNNetworkInfoPackage; // <--- IMPORT
-
-public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
-	...
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mReactRootView = new ReactRootView(this);
-
-        mReactInstanceManager = ReactInstanceManager.builder()
-                .setApplication(getApplication())
-                .setBundleAssetName("index.android.bundle")
-                .setJSMainModuleName("index.android")
-                .addPackage(new MainReactPackage())
-                .addPackage(new RNNetworkInfoPackage())      // <- ADD HERE
-                .setUseDeveloperSupport(BuildConfig.DEBUG)
-                .setInitialLifecycleState(LifecycleState.RESUMED)
-                .build();
-
-        mReactRootView.startReactApplication(mReactInstanceManager, "YourProject", null);
-
-        setContentView(mReactRootView);
+2. Update the android build tools version to `2.2.+` in `android/build.gradle`:
+    ```gradle
+    buildscript {
+        ...
+        dependencies {
+            classpath 'com.android.tools.build:gradle:2.2.+' // <- USE 2.2.+ version
+        }
+        ...
     }
-}
-```
+    ...
+    ```
+3. Update the gradle version to `2.14.1` in `android/gradle/wrapper/gradle-wrapper.properties`:
+    ```
+    ...
+    distributionUrl=https\://services.gradle.org/distributions/gradle-2.14.1-all.zip
+    ```
 
-## Examples
+4. Add the compile line to the dependencies in `android/app/build.gradle`:
+    ```gradle
+    dependencies {
+        ...
+        compile project(':react-native-network-info')
+    }
+    ```
+
+5. Add the import and link the package in `MainApplication.java`:
+    ```java
+    import com.pusherman.networkinfo.RNNetworkInfoPackage; // <-- add this import
+
+    public class MainApplication extends Application implements ReactApplication {
+        @Override
+        protected List<ReactPackage> getPackages() {
+            return Arrays.<ReactPackage>asList(
+                new MainReactPackage(),
+                new RNNetworkInfoPackage() // <-- add this line
+            );
+        }
+    }
+    ```
+
+## Usage
 
 ```javascript
 
@@ -89,5 +92,3 @@ NetworkInfo.getIPAddress(ip => {
 
 ## Dev Notes
 Notes on how this package was made can be [found here](http://eastcodes.com/packaging-and-sharing-react-native-modules "Packaging and Sharing React Native Modules").
-
-
