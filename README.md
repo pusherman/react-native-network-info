@@ -10,7 +10,7 @@ npm install react-native-network-info --save
 or
 
 ```javascript
-yum add react-native-network-info
+yarn add react-native-network-info
 ```
 
 ### `iOS`
