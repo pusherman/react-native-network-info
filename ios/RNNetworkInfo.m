@@ -20,7 +20,6 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(getSSID:(RCTResponseSenderBlock)callback)
 {
     NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
-    NSLog(@"%s: Supported interfaces: %@", __func__, interfaceNames);
     
     NSDictionary *SSIDInfo;
     NSString *SSID = @"error";
