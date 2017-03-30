@@ -2,6 +2,8 @@ package com.pusherman.networkinfo;
 
 import android.content.Context;
 import android.net.wifi.WifiInfo;
+import android.net.ConnectivityManager;
+import 	android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
@@ -32,6 +34,15 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
   @Override
   public String getName() {
     return TAG;
+  }
+
+  @ReactMethod
+  public void getNetworkStatus(final Callback callback) {
+    ConnectivityManager connectivityManager 
+          = (ConnectivityManager) getReactApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+    boolean available = activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    callback.invoke(available ? "connected" : "disconnected");
   }
 
   @ReactMethod
