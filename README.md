@@ -75,7 +75,6 @@ Run your project (Cmd+R)
 
 ```javascript
 
-// require module
 import NetworkInfo from 'react-native-network-info';
 
 // Get SSID
