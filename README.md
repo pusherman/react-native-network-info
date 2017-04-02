@@ -75,7 +75,7 @@ Run your project (Cmd+R)
 
 ```javascript
 
-import NetworkInfo from 'react-native-network-info';
+import { NetworkInfo } from 'react-native-network-info';
 
 // Get SSID
 NetworkInfo.getSSID(ssid => {
