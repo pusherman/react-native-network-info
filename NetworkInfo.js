@@ -1,8 +1,9 @@
 'use strict';
 
-var RNNetworkInfo = require('react-native').NativeModules.RNNetworkInfo;
+const { NativeModules } = require('react-native');
+const { RNNetworkInfo } = NativeModules;
 
-var NetworkInfo = {
+const NetworkInfo = {
   getSSID(ssid) {
     RNNetworkInfo.getSSID(ssid);
   },
@@ -10,6 +11,6 @@ var NetworkInfo = {
   getIPAddress(ip) {
     RNNetworkInfo.getIPAddress(ip);
   }
-};
+}
 
-module.exports = NetworkInfo;
+module.exports = { NetworkInfo }
