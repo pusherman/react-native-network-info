@@ -6,17 +6,13 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-
-import java.math.BigInteger;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.nio.ByteOrder;
-import java.util.Map;
+
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 public class RNNetworkInfo extends ReactContextBaseJavaModule {
   WifiManager wifi;
