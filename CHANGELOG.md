@@ -1,4 +1,4 @@
-## Unreleased (master branch)
+## 2.0.0 - 2017-04-07 (Saki Bomb)
 
 ### Breaking Changes
 - (JS) Switched to named exports
