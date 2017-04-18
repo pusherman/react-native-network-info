@@ -64,4 +64,25 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
 
     callback.invoke(ipAddress);
   }
+
+  @ReactMethod
+  public void getIPV4Address(final Callback callback) {
+    String ipAddress = null;
+
+    try {
+      for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+        NetworkInterface intf = en.nextElement();
+        for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+          InetAddress inetAddress = enumIpAddr.nextElement();
+          if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
+            ipAddress = inetAddress.getHostAddress().toString();
+          }
+        }
+      }
+    } catch (Exception ex) {
+      Log.e(TAG, ex.toString());
+    }
+
+    callback.invoke(ipAddress);
+  }
 }
