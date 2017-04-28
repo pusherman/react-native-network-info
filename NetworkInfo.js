@@ -8,6 +8,10 @@ const NetworkInfo = {
     RNNetworkInfo.getSSID(ssid);
   },
 
+  getBSSID(bssid) {
+    RNNetworkInfo.getBSSID(bssid);
+  },
+
   getIPAddress(ip) {
     RNNetworkInfo.getIPAddress(ip);
   }
