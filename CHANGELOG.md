@@ -1,3 +1,9 @@
+## 2.1.0 - 2017-04-28 (City Slicker)
+
+### Features
+- Added method for getting BSSID
+
+
 ## 2.0.0 - 2017-04-07 (Saki Bomb)
 
 ### Breaking Changes
