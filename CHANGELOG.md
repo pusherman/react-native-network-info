@@ -22,6 +22,7 @@ becomes
 ### Features
 - Updated README to make the Installation instructions up to date
 
+
 ## 1.0.0 - 2017-03-17 (Ghostwriter)
 
 ### Breaking Changes
@@ -36,10 +37,12 @@ becomes
 ### Features
 - Added podspec support
 
+
 ## 0.1.1 - 2015-07-12 (Bees Knees)
 
 ### Features
 - Updated README to include installation instructions
+
 
 ## 0.1.0 - 2015-07-12 (Lemurparty)
 
