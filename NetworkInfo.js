@@ -1,6 +1,6 @@
 'use strict';
 
-const { NativeModules } = require('react-native');
+import { NativeModules } from 'react-native';
 const { RNNetworkInfo } = NativeModules;
 
 const NetworkInfo = {
