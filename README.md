@@ -91,6 +91,9 @@ NetworkInfo.getSSID(ssid => {
 // Get Local IP
 NetworkInfo.getIPAddress(ip => {
   console.log(ip);
+// Get BSSID
+NetworkInfo.getBSSID(ssid => {
+  console.log(ssid);
 });
 
 ```
