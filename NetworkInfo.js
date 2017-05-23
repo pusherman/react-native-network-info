@@ -14,6 +14,10 @@ const NetworkInfo = {
 
   getIPAddress(ip) {
     RNNetworkInfo.getIPAddress(ip);
+  },
+
+  getIPV4Address(ip) {
+    RNNetworkInfo.getIPV4Address(ip);
   }
 }
 
