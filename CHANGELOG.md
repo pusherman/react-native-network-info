@@ -1,3 +1,9 @@
+## 2.2.0 - 2017-05-23 (Juggernaut)
+
+### Features
+- (Android) Added method for getting IPv4 address (thanks @davidstoneham)
+
+
 ## 2.1.0 - 2017-04-28 (City Slicker)
 
 ### Features
