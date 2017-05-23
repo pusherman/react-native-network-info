@@ -83,19 +83,25 @@ Run your project (Cmd+R)
 
 import { NetworkInfo } from 'react-native-network-info';
 
+// Get Local IP
+NetworkInfo.getIPAddress(ip => {
+  console.log(ip);
+});
+
+// Get IPv4 IP (Android Only)
+NetworkInfo.getIPV4Address(ipv4 => {
+  console.log(ipv4);
+});
+
 // Get SSID
 NetworkInfo.getSSID(ssid => {
   console.log(ssid);
 });
 
-// Get Local IP
-NetworkInfo.getIPAddress(ip => {
-  console.log(ip);
 // Get BSSID
 NetworkInfo.getBSSID(ssid => {
   console.log(ssid);
 });
-
 ```
 
 ## Dev Notes
