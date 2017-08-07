@@ -2,6 +2,11 @@
 
 React Native library for getting information about the devices network
 
+## Requirements
+
+Version 3+ requires RN 0.47 or higher
+Version 2+ requires RN 0.40 - RN 0.46
+
 ## Installation
 
 ```javascript
