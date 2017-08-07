@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import java.net.InetAddress;
+import java.net.Inet4Address;
 
 import java.net.NetworkInterface;
 import java.util.Enumeration;
