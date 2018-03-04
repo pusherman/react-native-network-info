@@ -9,11 +9,13 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import java.net.InetAddress;
-import java.net.Inet4Address;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 public class RNNetworkInfo extends ReactContextBaseJavaModule {
   WifiManager wifi;
@@ -54,20 +56,12 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
   public void getIPAddress(final Callback callback) {
     String ipAddress = null;
 
-    try {
-      for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-        NetworkInterface intf = en.nextElement();
-        for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-          InetAddress inetAddress = enumIpAddr.nextElement();
-          if (!inetAddress.isLoopbackAddress()) {
-            ipAddress = inetAddress.getHostAddress();
-          }
-        }
+    for (InetAddress address : getInetAddresses()) {
+      if (!address.isLoopbackAddress()) {
+        ipAddress = address.getHostAddress().toString();
       }
-    } catch (Exception ex) {
-      Log.e(TAG, ex.toString());
     }
-
+    
     callback.invoke(ipAddress);
   }
 
@@ -75,20 +69,29 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
   public void getIPV4Address(final Callback callback) {
     String ipAddress = null;
 
+    for (InetAddress address : getInetAddresses()) {
+      if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
+        ipAddress = address.getHostAddress().toString();
+      }
+    }
+
+    callback.invoke(ipAddress);
+  }
+
+
+  private List<InetAddress> getInetAddresses() {
+    List<InetAddress> addresses = new ArrayList<>();
     try {
       for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
         NetworkInterface intf = en.nextElement();
         for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
           InetAddress inetAddress = enumIpAddr.nextElement();
-          if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
-            ipAddress = inetAddress.getHostAddress().toString();
-          }
+          addresses.add(inetAddress);
         }
       }
     } catch (Exception ex) {
       Log.e(TAG, ex.toString());
     }
-
-    callback.invoke(ipAddress);
+    return addresses;
   }
 }
