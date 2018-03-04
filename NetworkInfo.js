@@ -12,6 +12,10 @@ const NetworkInfo = {
     RNNetworkInfo.getBSSID(bssid);
   },
 
+  getBroadcast(ip) {
+    RNNetworkInfo.getBroadcast(ip);
+  },
+
   getIPAddress(ip) {
     RNNetworkInfo.getIPAddress(ip);
   },
