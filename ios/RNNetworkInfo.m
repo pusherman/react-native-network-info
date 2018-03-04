@@ -61,6 +61,43 @@ RCT_EXPORT_METHOD(getBSSID:(RCTResponseSenderBlock)callback)
     callback(@[BSSID]);
 }
 
+RCT_EXPORT_METHOD(getBroadcast:(RCTResponseSenderBlock)callback)
+{
+    NSString *address = @"error";
+    NSString *netmask = @"error";
+
+    struct ifaddrs *interfaces = NULL;
+    struct ifaddrs *temp_addr = NULL;
+    int success = 0;
+
+    success = getifaddrs(&interfaces);
+
+    if (success == 0) {
+        temp_addr = interfaces;
+        while(temp_addr != NULL) {
+            if(temp_addr->ifa_addr->sa_family == AF_INET) {
+                if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"]) {
+                    address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
+                    netmask = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_netmask)->sin_addr)];
+
+                    struct in_addr local_addr;
+                    struct in_addr netmask_addr;
+                    inet_aton([address UTF8String], &local_addr);
+                    inet_aton([netmask UTF8String], &netmask_addr);
+
+                    local_addr.s_addr |= ~(netmask_addr.s_addr);
+
+                    address = [NSString stringWithUTF8String:inet_ntoa(local_addr)];
+                }
+            }
+            temp_addr = temp_addr->ifa_next;
+        }
+    }
+
+    freeifaddrs(interfaces);
+    callback(@[address]);
+}
+
 RCT_EXPORT_METHOD(getIPAddress:(RCTResponseSenderBlock)callback)
 {
     NSString *address = @"error";
