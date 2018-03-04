@@ -18,80 +18,80 @@ import java.util.Enumeration;
 import java.util.List;
 
 public class RNNetworkInfo extends ReactContextBaseJavaModule {
-  WifiManager wifi;
+    WifiManager wifi;
 
-  public static final String TAG = "RNNetworkInfo";
+    public static final String TAG = "RNNetworkInfo";
 
-  public RNNetworkInfo(ReactApplicationContext reactContext) {
-    super(reactContext);
+    public RNNetworkInfo(ReactApplicationContext reactContext) {
+        super(reactContext);
 
-    wifi = (WifiManager)reactContext.getApplicationContext()
-            .getSystemService(Context.WIFI_SERVICE);
-  }
-
-  @Override
-  public String getName() {
-    return TAG;
-  }
-
-  @ReactMethod
-  public void getSSID(final Callback callback) {
-    WifiInfo info = wifi.getConnectionInfo();
-
-    // This value should be wrapped in double quotes, so we need to unwrap it.
-    String ssid = info.getSSID();
-    if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
-      ssid = ssid.substring(1, ssid.length() - 1);
+        wifi = (WifiManager) reactContext.getApplicationContext()
+                .getSystemService(Context.WIFI_SERVICE);
     }
 
-    callback.invoke(ssid);
-  }
-
-  @ReactMethod
-  public void getBSSID(final Callback callback) {
-    callback.invoke(wifi.getConnectionInfo().getBSSID());
-  }
-
-  @ReactMethod
-  public void getIPAddress(final Callback callback) {
-    String ipAddress = null;
-
-    for (InetAddress address : getInetAddresses()) {
-      if (!address.isLoopbackAddress()) {
-        ipAddress = address.getHostAddress().toString();
-      }
-    }
-    
-    callback.invoke(ipAddress);
-  }
-
-  @ReactMethod
-  public void getIPV4Address(final Callback callback) {
-    String ipAddress = null;
-
-    for (InetAddress address : getInetAddresses()) {
-      if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
-        ipAddress = address.getHostAddress().toString();
-      }
+    @Override
+    public String getName() {
+        return TAG;
     }
 
-    callback.invoke(ipAddress);
-  }
+    @ReactMethod
+    public void getSSID(final Callback callback) {
+        WifiInfo info = wifi.getConnectionInfo();
 
-
-  private List<InetAddress> getInetAddresses() {
-    List<InetAddress> addresses = new ArrayList<>();
-    try {
-      for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-        NetworkInterface intf = en.nextElement();
-        for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-          InetAddress inetAddress = enumIpAddr.nextElement();
-          addresses.add(inetAddress);
+        // This value should be wrapped in double quotes, so we need to unwrap it.
+        String ssid = info.getSSID();
+        if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
+            ssid = ssid.substring(1, ssid.length() - 1);
         }
-      }
-    } catch (Exception ex) {
-      Log.e(TAG, ex.toString());
+
+        callback.invoke(ssid);
     }
-    return addresses;
-  }
+
+    @ReactMethod
+    public void getBSSID(final Callback callback) {
+        callback.invoke(wifi.getConnectionInfo().getBSSID());
+    }
+
+    @ReactMethod
+    public void getIPAddress(final Callback callback) {
+        String ipAddress = null;
+
+        for (InetAddress address : getInetAddresses()) {
+            if (!address.isLoopbackAddress()) {
+                ipAddress = address.getHostAddress().toString();
+            }
+        }
+
+        callback.invoke(ipAddress);
+    }
+
+    @ReactMethod
+    public void getIPV4Address(final Callback callback) {
+        String ipAddress = null;
+
+        for (InetAddress address : getInetAddresses()) {
+            if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
+                ipAddress = address.getHostAddress().toString();
+            }
+        }
+
+        callback.invoke(ipAddress);
+    }
+
+
+    private List<InetAddress> getInetAddresses() {
+        List<InetAddress> addresses = new ArrayList<>();
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    addresses.add(inetAddress);
+                }
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, ex.toString());
+        }
+        return addresses;
+    }
 }
