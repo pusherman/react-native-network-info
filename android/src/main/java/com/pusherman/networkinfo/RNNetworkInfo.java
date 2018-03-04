@@ -55,11 +55,11 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getBroadcast(@NonNull String ip, final Callback callback) {
+    public void getBroadcast(/*@NonNull String ip, */final Callback callback) {
         String ipAddress = null;
 
         for (InterfaceAddress address : getInetAddresses()) {
-            if (address.getAddress().toString().equalsIgnoreCase(ip)) {
+            if (!address.getAddress().isLoopbackAddress()/*address.getAddress().toString().equalsIgnoreCase(ip)*/) {
                 ipAddress = address.getBroadcast().toString();
             }
         }
