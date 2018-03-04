@@ -3,6 +3,7 @@ package com.pusherman.networkinfo;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.facebook.react.bridge.Callback;
@@ -12,6 +13,7 @@ import com.facebook.react.bridge.ReactMethod;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -53,12 +55,25 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getBroadcast(@NonNull String ip, final Callback callback) {
+        String ipAddress = null;
+
+        for (InterfaceAddress address : getInetAddresses()) {
+            if (address.getAddress().toString().equalsIgnoreCase(ip)) {
+                ipAddress = address.getBroadcast().toString();
+            }
+        }
+
+        callback.invoke(ipAddress);
+    }
+
+    @ReactMethod
     public void getIPAddress(final Callback callback) {
         String ipAddress = null;
 
-        for (InetAddress address : getInetAddresses()) {
-            if (!address.isLoopbackAddress()) {
-                ipAddress = address.getHostAddress().toString();
+        for (InterfaceAddress address : getInetAddresses()) {
+            if (!address.getAddress().isLoopbackAddress()) {
+                ipAddress = address.getAddress().getHostAddress().toString();
             }
         }
 
@@ -69,9 +84,9 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
     public void getIPV4Address(final Callback callback) {
         String ipAddress = null;
 
-        for (InetAddress address : getInetAddresses()) {
-            if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
-                ipAddress = address.getHostAddress().toString();
+        for (InterfaceAddress address : getInetAddresses()) {
+            if (!address.getAddress().isLoopbackAddress() && address.getAddress() instanceof Inet4Address) {
+                ipAddress = address.getAddress().getHostAddress().toString();
             }
         }
 
@@ -79,14 +94,14 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
     }
 
 
-    private List<InetAddress> getInetAddresses() {
-        List<InetAddress> addresses = new ArrayList<>();
+    private List<InterfaceAddress> getInetAddresses() {
+        List<InterfaceAddress> addresses = new ArrayList<>();
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    addresses.add(inetAddress);
+
+                for (InterfaceAddress interface_address : intf.getInterfaceAddresses()) {
+                    addresses.add(interface_address);
                 }
             }
         } catch (Exception ex) {
