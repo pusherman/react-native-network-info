@@ -1,3 +1,9 @@
+## 3.1.0 - 2018-03-06 (Catnip)
+  
+### Features
+- (iOS) Added support for getting IPv4 address (thanks @jgfidelis)
+
+
 ## 3.0.0 - 2017-08-07 (Flapjack)
 
 ### Breaking Changes
