@@ -93,9 +93,14 @@ NetworkInfo.getIPAddress(ip => {
   console.log(ip);
 });
 
-// Get IPv4 IP (Android Only)
+// Get IPv4 IP
 NetworkInfo.getIPV4Address(ipv4 => {
   console.log(ipv4);
+});
+
+// Get Broadcast
+NetworkInfo.getBroadcast(address => {
+  console.log(address);
 });
 
 // Get SSID
