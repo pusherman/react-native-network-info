@@ -1,5 +1,12 @@
+## 3.2.0 - 2018-04-03 (Fine Wine)
+
+### Features
+- (iOS/Android) Added method for getting broadcast address (thanks @codlab)
+- (Android) Upgrade library dependencies (thanks @codlab)
+
+
 ## 3.1.0 - 2018-03-06 (Catnip)
-  
+
 ### Features
 - (iOS) Added support for getting IPv4 address (thanks @jgfidelis)
 
