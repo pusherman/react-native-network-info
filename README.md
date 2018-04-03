@@ -18,11 +18,46 @@ or
 yarn add react-native-network-info
 ```
 
-### Automatic Install
+### Linking the library
 
 `react-native link`
 
-### Manual Install
+## Usage
+
+```javascript
+
+import { NetworkInfo } from 'react-native-network-info';
+
+// Get Local IP
+NetworkInfo.getIPAddress(ip => {
+  console.log(ip);
+});
+
+// Get IPv4 IP
+NetworkInfo.getIPV4Address(ipv4 => {
+  console.log(ipv4);
+});
+
+// Get Broadcast
+NetworkInfo.getBroadcast(address => {
+  console.log(address);
+});
+
+// Get SSID
+NetworkInfo.getSSID(ssid => {
+  console.log(ssid);
+});
+
+// Get BSSID
+NetworkInfo.getBSSID(ssid => {
+  console.log(ssid);
+});
+```
+
+
+### Manually Linking the Library
+
+If `react-native link` fails.
 
 ### `iOS`
 
@@ -82,37 +117,6 @@ Run your project (Cmd+R)
     }
     ```
 
-## Usage
-
-```javascript
-
-import { NetworkInfo } from 'react-native-network-info';
-
-// Get Local IP
-NetworkInfo.getIPAddress(ip => {
-  console.log(ip);
-});
-
-// Get IPv4 IP
-NetworkInfo.getIPV4Address(ipv4 => {
-  console.log(ipv4);
-});
-
-// Get Broadcast
-NetworkInfo.getBroadcast(address => {
-  console.log(address);
-});
-
-// Get SSID
-NetworkInfo.getSSID(ssid => {
-  console.log(ssid);
-});
-
-// Get BSSID
-NetworkInfo.getBSSID(ssid => {
-  console.log(ssid);
-});
-```
 
 ## Dev Notes
 Notes on how this package was made can be [found here](https://eastcodes.com/packaging-and-sharing-react-native-modules "Packaging and Sharing React Native Modules").
