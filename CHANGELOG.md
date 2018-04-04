@@ -1,3 +1,9 @@
+## 3.2.1 - 2018-04-04 (Refined Wine)
+
+### Bug Fix
+- (Android) Added google as a repo to build.gradle
+
+
 ## 3.2.0 - 2018-04-03 (Fine Wine)
 
 ### Features
