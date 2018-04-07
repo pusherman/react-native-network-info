@@ -1,3 +1,9 @@
+## 3.2.2 - 2018-04-06 (Desert Wine)
+
+### Bug Fix
+- (Android) Removed createJSModules to fix Android build
+
+
 ## 3.2.1 - 2018-04-04 (Refined Wine)
 
 ### Bug Fix
