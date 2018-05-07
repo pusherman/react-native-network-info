@@ -3,143 +3,140 @@ package com.pusherman.networkinfo;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-
-import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.InterfaceAddress;
+import java.net.Inet4Address;
+
 import java.net.NetworkInterface;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
+import android.net.ConnectivityManager;
+
 
 public class RNNetworkInfo extends ReactContextBaseJavaModule {
-    WifiManager wifi;
+  WifiManager wifi;
+  WifiInfo wifiInfo;
+  ConnectivityManager conMan;
 
-    public static final String TAG = "RNNetworkInfo";
+  public static final String TAG = "RNNetworkInfo";
 
-    public RNNetworkInfo(ReactApplicationContext reactContext) {
-        super(reactContext);
+  public RNNetworkInfo(ReactApplicationContext reactContext) {
+    super(reactContext);
+    
+    wifi = (WifiManager)reactContext.getApplicationContext()
+            .getSystemService(Context.WIFI_SERVICE);
 
-        wifi = (WifiManager) reactContext.getApplicationContext()
-                .getSystemService(Context.WIFI_SERVICE);
+    conMan = (ConnectivityManager)reactContext.getApplicationContext()
+            .getSystemService(Context.CONNECTIVITY_SERVICE);
+  }
+
+  @Override
+  public String getName() {
+    return TAG;
+  }
+
+  @ReactMethod
+  public void getSSID(final Callback callback) {
+    WifiInfo info = wifi.getConnectionInfo();
+
+    // This value should be wrapped in double quotes, so we need to unwrap it.
+    String ssid = info.getSSID();
+    if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
+      ssid = ssid.substring(1, ssid.length() - 1);
     }
 
-    @Override
-    public String getName() {
-        return TAG;
-    }
+    callback.invoke(ssid);
+  }
 
-    @ReactMethod
-    public void getSSID(final Callback callback) {
-        WifiInfo info = wifi.getConnectionInfo();
+  @ReactMethod
+  public void getBSSID(final Callback callback) {
+    callback.invoke(wifi.getConnectionInfo().getBSSID());
+  }
 
-        // This value should be wrapped in double quotes, so we need to unwrap it.
-        String ssid = info.getSSID();
-        if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
-            ssid = ssid.substring(1, ssid.length() - 1);
+  @ReactMethod
+  public void getIPAddress(final Callback callback) {
+    String ipAddress = null;
+
+    try {
+      for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+        NetworkInterface intf = en.nextElement();
+        for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+          InetAddress inetAddress = enumIpAddr.nextElement();
+          if (!inetAddress.isLoopbackAddress()) {
+            ipAddress = inetAddress.getHostAddress();
+          }
         }
-
-        callback.invoke(ssid);
+      }
+    } catch (Exception ex) {
+      Log.e(TAG, ex.toString());
     }
 
-    @ReactMethod
-    public void getBSSID(final Callback callback) {
-        callback.invoke(wifi.getConnectionInfo().getBSSID());
-    }
+    callback.invoke(ipAddress);
+  }
 
-    @ReactMethod
-    public void getBroadcast(/*@NonNull String ip, */final Callback callback) {
-        String ipAddress = null;
+  @ReactMethod
+  public void getIPV4Address(final Callback callback) {
+    String ipAddress = null;
 
-        for (InterfaceAddress address : getInetAddresses()) {
-            if (!address.getAddress().isLoopbackAddress()/*address.getAddress().toString().equalsIgnoreCase(ip)*/) {
-                ipAddress = address.getBroadcast().toString();
-            }
+    try {
+      for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+        NetworkInterface intf = en.nextElement();
+        for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+          InetAddress inetAddress = enumIpAddr.nextElement();
+          if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
+            ipAddress = inetAddress.getHostAddress().toString();
+          }
         }
-
-        callback.invoke(ipAddress);
+      }
+    } catch (Exception ex) {
+      Log.e(TAG, ex.toString());
     }
 
-    @ReactMethod
-    public void getIPAddress(final Callback callback) {
-        String ipAddress = null;
+    callback.invoke(ipAddress);
+  }
 
-        for (InterfaceAddress address : getInetAddresses()) {
-            if (!address.getAddress().isLoopbackAddress()) {
-                ipAddress = address.getAddress().getHostAddress().toString();
-            }
-        }
+  @ReactMethod
+  public void getIPV4MacAddress(final Callback callback) {
+    String mac = null;
 
-        callback.invoke(ipAddress);
-    }
-
-    @ReactMethod
-    public void getIPV4Address(final Callback callback) {
-        String ipAddress = null;
-
-        for (InterfaceAddress address : getInetAddresses()) {
-            if (!address.getAddress().isLoopbackAddress() && address.getAddress() instanceof Inet4Address) {
-                ipAddress = address.getAddress().getHostAddress().toString();
-            }
-        }
-
-        callback.invoke(ipAddress);
-    }
-
-    @ReactMethod
-    public void getIPV4MacAddress(final Callback callback) {
-        String mac = null;
-
-        try {
+    try {
+      boolean isWifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
+      if(isWifi == true) {
+        mac = wifi.getConnectionInfo().getMacAddress();
+      } else {
         for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-            StringBuffer stringBuffer = new StringBuffer();                
-            NetworkInterface networkInterface = en.nextElement();
-            if (networkInterface != null) {
-                byte[] bytes = networkInterface.getHardwareAddress();  
-                if (bytes != null) {  
-                for (int i = 0; i < bytes.length; i++) {  
-                    if (i != 0) {  
-                        stringBuffer.append("-");  
-                    }  
-                    int tmp = bytes[i] & 0xff;  
-                    String str = Integer.toHexString(tmp);  
-                    if (str.length() == 1) {  
-                        stringBuffer.append("0" + str);  
-                    } else {  
-                        stringBuffer.append(str);  
-                    }  
-                }  
-                mac = stringBuffer.toString().toUpperCase();
-                } 
-            }
-            }
-        } catch (Exception ex) {
-        Log.e(TAG, ex.toString());
+          StringBuffer stringBuffer = new StringBuffer();                
+          NetworkInterface networkInterface = en.nextElement();
+          if (networkInterface != null) {
+            byte[] bytes = networkInterface.getHardwareAddress();  
+            if (bytes != null) {  
+              for (int i = 0; i < bytes.length; i++) {  
+                  if (i != 0) {  
+                      stringBuffer.append("-");  
+                  }  
+                  int tmp = bytes[i] & 0xff;  
+                  String str = Integer.toHexString(tmp);  
+                  if (str.length() == 1) {  
+                      stringBuffer.append("0" + str);  
+                  } else {  
+                      stringBuffer.append(str);  
+                  }  
+              }  
+              mac = stringBuffer.toString().toUpperCase();
+            } 
+          }
         }
-
-        callback.invoke(mac);
+      }
+      
+    } catch (Exception ex) {
+      Log.e(TAG, ex.toString());
     }
 
-    private List<InterfaceAddress> getInetAddresses() {
-        List<InterfaceAddress> addresses = new ArrayList<>();
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
-                NetworkInterface intf = en.nextElement();
+    callback.invoke(mac);
+  }
 
-                for (InterfaceAddress interface_address : intf.getInterfaceAddresses()) {
-                    addresses.add(interface_address);
-                }
-            }
-        } catch (Exception ex) {
-            Log.e(TAG, ex.toString());
-        }
-        return addresses;
-    }
 }
