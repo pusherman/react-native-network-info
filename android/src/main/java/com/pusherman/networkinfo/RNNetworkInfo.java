@@ -116,7 +116,7 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
             if (bytes != null) {  
               for (int i = 0; i < bytes.length; i++) {  
                   if (i != 0) {  
-                      stringBuffer.append("-");  
+                      stringBuffer.append(":");  
                   }  
                   int tmp = bytes[i] & 0xff;  
                   String str = Integer.toHexString(tmp);  
