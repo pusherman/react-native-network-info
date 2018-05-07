@@ -22,6 +22,10 @@ const NetworkInfo = {
 
   getIPV4Address(ip) {
     RNNetworkInfo.getIPV4Address(ip);
+  },
+
+  getIPV4MacAddress(mac) {
+    RNNetworkInfo.getIPV4MacAddress(mac);
   }
 }
 

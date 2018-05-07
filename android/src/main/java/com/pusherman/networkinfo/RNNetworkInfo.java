@@ -93,6 +93,39 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
         callback.invoke(ipAddress);
     }
 
+    @ReactMethod
+    public void getIPV4MacAddress(final Callback callback) {
+        String mac = null;
+
+        try {
+        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+            StringBuffer stringBuffer = new StringBuffer();                
+            NetworkInterface networkInterface = en.nextElement();
+            if (networkInterface != null) {
+                byte[] bytes = networkInterface.getHardwareAddress();  
+                if (bytes != null) {  
+                for (int i = 0; i < bytes.length; i++) {  
+                    if (i != 0) {  
+                        stringBuffer.append("-");  
+                    }  
+                    int tmp = bytes[i] & 0xff;  
+                    String str = Integer.toHexString(tmp);  
+                    if (str.length() == 1) {  
+                        stringBuffer.append("0" + str);  
+                    } else {  
+                        stringBuffer.append(str);  
+                    }  
+                }  
+                mac = stringBuffer.toString().toUpperCase();
+                } 
+            }
+            }
+        } catch (Exception ex) {
+        Log.e(TAG, ex.toString());
+        }
+
+        callback.invoke(mac);
+    }
 
     private List<InterfaceAddress> getInetAddresses() {
         List<InterfaceAddress> addresses = new ArrayList<>();
