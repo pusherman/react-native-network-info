@@ -1,5 +1,5 @@
 # react-native-network-info
-
+I add some APIs to getIPV4MacAddress
 React Native library for getting information about the devices network
 
 ## Requirements
@@ -51,6 +51,11 @@ NetworkInfo.getSSID(ssid => {
 // Get BSSID
 NetworkInfo.getBSSID(ssid => {
   console.log(ssid);
+});
+
+// GET Macaddress
+NetworkInfo.getIPV4MacAddress(mac => {
+  console.log(mac);
 });
 ```
 

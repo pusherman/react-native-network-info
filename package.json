@@ -1,11 +1,11 @@
 {
-  "name": "react-native-network-info",
-  "version": "3.2.2",
+  "name": "react-native-networkinfo",
+  "version": "1.0.0",
   "description": "Get local network information",
   "main": "NetworkInfo.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:pusherman/react-native-network-info.git"
+    "url": "git@github.com:roy2651/react-native-network-info.git"
   },
   "keywords": [
     "react-component",
@@ -17,6 +17,6 @@
   "peerDependencies": {
     "react-native": ">=0.47"
   },
-  "author": "Corey Wilson <corey@eastcodes.com> (https://github.com/powerfulninja)",
+  "author": "roy2651",
   "license": "MIT"
 }
