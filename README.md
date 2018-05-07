@@ -4,12 +4,12 @@
 ## Installation
 
 ```javascript
-npm install react-native-network-info --save
+npm install react-native-networkinfobyroy2651 --save
 ```
 or
 
 ```javascript
-yarn add react-native-network-info
+yarn add react-native-networkinfobyroy2651
 ```
 
 ### Linking the library
