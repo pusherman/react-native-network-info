@@ -1,11 +1,5 @@
-# react-native-network-info
-I add some APIs to getIPV4MacAddress
-React Native library for getting information about the devices network
-
-## Requirements
-
-Version 3+ requires RN 0.47 or higher
-Version 2+ requires RN 0.40 - RN 0.46
+## info
+这个包我加了一个api获取当前活动网卡的mac地址
 
 ## Installation
 
