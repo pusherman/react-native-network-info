@@ -3,6 +3,7 @@
   "version": "3.2.2",
   "description": "Get local network information",
   "main": "NetworkInfo.js",
+  "types": "NetworkInfo.d.ts",
   "repository": {
     "type": "git",
     "url": "git@github.com:pusherman/react-native-network-info.git"
