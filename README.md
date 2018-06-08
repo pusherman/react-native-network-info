@@ -1,21 +1,15 @@
-# react-native-network-info
-
-React Native library for getting information about the devices network
-
-## Requirements
-
-Version 3+ requires RN 0.47 or higher
-Version 2+ requires RN 0.40 - RN 0.46
+## info
+这个包我加了一个api获取当前活动网卡的mac地址
 
 ## Installation
 
 ```javascript
-npm install react-native-network-info --save
+npm install react-native-networkinfobyroy2651 --save
 ```
 or
 
 ```javascript
-yarn add react-native-network-info
+yarn add react-native-networkinfobyroy2651
 ```
 
 ### Linking the library
@@ -51,6 +45,11 @@ NetworkInfo.getSSID(ssid => {
 // Get BSSID
 NetworkInfo.getBSSID(ssid => {
   console.log(ssid);
+});
+
+// GET Macaddress
+NetworkInfo.getIPV4MacAddress(mac => {
+  console.log(mac);
 });
 ```
 
