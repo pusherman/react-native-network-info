@@ -43,7 +43,7 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
 
         // This value should be wrapped in double quotes, so we need to unwrap it.
         // https://stackoverflow.com/a/34848930/5732760
-        String ssid = null;
+        String ssid = "error";
         if (info.getSupplicantState() == SupplicantState.COMPLETED) {
             ssid = info.getSSID();
             if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
@@ -59,7 +59,7 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
         WifiInfo info = wifi.getConnectionInfo();
 
         // https://stackoverflow.com/a/34848930/5732760
-        String bssid = null;
+        String bssid = "error";
         if (info.getSupplicantState() == SupplicantState.COMPLETED) {
             bssid = wifi.getConnectionInfo().getBSSID();
         }
@@ -69,7 +69,7 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getBroadcast(/*@NonNull String ip, */final Callback callback) {
-        String ipAddress = null;
+        String ipAddress = "error";
 
         for (InterfaceAddress address : getInetAddresses()) {
             if (!address.getAddress().isLoopbackAddress()/*address.getAddress().toString().equalsIgnoreCase(ip)*/) {
@@ -82,7 +82,7 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getIPAddress(final Callback callback) {
-        String ipAddress = null;
+        String ipAddress = "error";
 
         for (InterfaceAddress address : getInetAddresses()) {
             if (!address.getAddress().isLoopbackAddress()) {
@@ -95,7 +95,7 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getIPV4Address(final Callback callback) {
-        String ipAddress = null;
+        String ipAddress = "0.0.0.0";
 
         for (InterfaceAddress address : getInetAddresses()) {
             if (!address.getAddress().isLoopbackAddress() && address.getAddress() instanceof Inet4Address) {
