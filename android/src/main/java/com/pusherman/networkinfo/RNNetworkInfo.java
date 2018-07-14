@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
+import android.net.wifi.SupplicantState;
 import android.util.Log;
 
 import com.facebook.react.bridge.Callback;
@@ -41,9 +42,13 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
         WifiInfo info = wifi.getConnectionInfo();
 
         // This value should be wrapped in double quotes, so we need to unwrap it.
-        String ssid = info.getSSID();
-        if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
-            ssid = ssid.substring(1, ssid.length() - 1);
+        // https://stackoverflow.com/a/34848930/5732760
+        String ssid = null;
+        if (info.getSupplicantState() == SupplicantState.COMPLETED) {
+            ssid = info.getSSID();
+            if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
+                ssid = ssid.substring(1, ssid.length() - 1);
+            }
         }
 
         callback.invoke(ssid);
@@ -51,7 +56,15 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getBSSID(final Callback callback) {
-        callback.invoke(wifi.getConnectionInfo().getBSSID());
+        WifiInfo info = wifi.getConnectionInfo();
+
+        // https://stackoverflow.com/a/34848930/5732760
+        String bssid = null;
+        if (info.getSupplicantState() == SupplicantState.COMPLETED) {
+            bssid = wifi.getConnectionInfo().getBSSID();
+        }
+
+        callback.invoke(bssid);
     }
 
     @ReactMethod
