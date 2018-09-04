@@ -1,3 +1,14 @@
+## 4.0.0 - 2018-04-06 (Walrus Tooth)
+
+### Breaking Changes
+- (Android) The string "error" will be returned if the library is unable to find the value requested
+to keep it consistent with the iOS library
+
+### Features
+- (Android) SupplicantState is now checked to fix a bug when wifi was turned off then back on (thanks @yosimasu)
+- Typescript declarations added (thanks @fitzpasd)
+
+
 ## 3.2.2 - 2018-04-06 (Desert Wine)
 
 ### Bug Fix

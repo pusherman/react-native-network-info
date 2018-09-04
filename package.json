@@ -18,6 +18,6 @@
   "peerDependencies": {
     "react-native": ">=0.47"
   },
-  "author": "Corey Wilson <corey@eastcodes.com> (https://github.com/powerfulninja)",
+  "author": "Corey Wilson <corey@eastcodes.com> (https://github.com/pusherman)",
   "license": "MIT"
 }
