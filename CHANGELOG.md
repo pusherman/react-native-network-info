@@ -1,4 +1,4 @@
-## 4.0.0 - 2018-04-06 (Walrus Tooth)
+## 4.0.0 - 2018-09-04 (Walrus Tooth)
 
 ### Breaking Changes
 - (Android) The string "error" will be returned if the library is unable to find the value requested
