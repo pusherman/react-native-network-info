@@ -1,6 +1,6 @@
 {
   "name": "react-native-network-info",
-  "version": "3.2.2",
+  "version": "4.0.0",
   "description": "Get local network information",
   "main": "NetworkInfo.js",
   "types": "NetworkInfo.d.ts",
