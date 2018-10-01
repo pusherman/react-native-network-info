@@ -20,7 +20,7 @@ yarn add react-native-network-info
 
 ### Linking the library
 
-`react-native link`
+`react-native link react-native-network-info`
 
 ## Usage
 
