@@ -18,12 +18,19 @@ import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Arrays;
 import java.util.List;
+
+
+
 
 public class RNNetworkInfo extends ReactContextBaseJavaModule {
     WifiManager wifi;
 
     public static final String TAG = "RNNetworkInfo";
+
+    public static List<String> DSLITE_LIST = Arrays.asList("192.0.0.0","192.0.0.1","192.0.0.2","192.0.0.3","192.0.0.4","192.0.0.5","192.0.0.6","192.0.0.7");
+
 
     public RNNetworkInfo(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -83,10 +90,14 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getIPAddress(final Callback callback) {
         String ipAddress = "error";
+        String tmp = "0.0.0.0";
 
         for (InterfaceAddress address : getInetAddresses()) {
             if (!address.getAddress().isLoopbackAddress()) {
-                ipAddress = address.getAddress().getHostAddress().toString();
+                tmp = address.getAddress().getHostAddress().toString();
+                if (!inDSLITERange(tmp)) {
+                    ipAddress = tmp;
+                } 
             }
         }
 
@@ -96,14 +107,26 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getIPV4Address(final Callback callback) {
         String ipAddress = "0.0.0.0";
-
+        String tmp = "0.0.0.0";
+        
         for (InterfaceAddress address : getInetAddresses()) {
             if (!address.getAddress().isLoopbackAddress() && address.getAddress() instanceof Inet4Address) {
-                ipAddress = address.getAddress().getHostAddress().toString();
+                tmp = address.getAddress().getHostAddress().toString();
+                if (!inDSLITERange(tmp)) {
+                    ipAddress = tmp;
+                } 
             }
         }
 
         callback.invoke(ipAddress);
+    }
+
+
+    private Boolean inDSLITERange (String ip) {
+        // Fixes issue https://github.com/pusherman/react-native-network-info/issues/43
+        // Based on comment https://github.com/pusherman/react-native-network-info/issues/43#issuecomment-358360692
+        // added this check in getIPAddress and getIPV4Address
+        return RNNetworkInfo.DSLITE_LIST.contains(ip);
     }
 
 
