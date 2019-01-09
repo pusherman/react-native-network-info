@@ -1,4 +1,4 @@
-## 4.0.1 - 2019-01-09 (Desert Wine)
+## 4.0.1 - 2019-01-09 (Traveling On)
 
 ### Bug Fix
 - (Android) Fix intellij-core (thanks @martinffx)
