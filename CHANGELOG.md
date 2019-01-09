@@ -1,3 +1,11 @@
+## 4.0.1 - 2019-01-09 (Desert Wine)
+
+### Bug Fix
+- (Android) Fix intellij-core (thanks @martinffx)
+- (Android) Ignore DS-LITE block of ip addresses (thanks @shashfrankenstien)
+- (iOS) Corrected import module (thanks @wuwen2333)
+
+
 ## 4.0.0 - 2018-09-04 (Walrus Tooth)
 
 ### Breaking Changes
