@@ -6,7 +6,7 @@ import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 import android.net.wifi.SupplicantState;
 import android.util.Log;
-
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -45,80 +45,121 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getSSID(final Callback callback) {
-        WifiInfo info = wifi.getConnectionInfo();
+    public void getSSID(final Promise promise) throws Exception {
+        new Thread(new Runnable() {
+                public void run() {
+                        try {
+                            WifiInfo info = wifi.getConnectionInfo();
 
-        // This value should be wrapped in double quotes, so we need to unwrap it.
-        // https://stackoverflow.com/a/34848930/5732760
-        String ssid = "error";
-        if (info.getSupplicantState() == SupplicantState.COMPLETED) {
-            ssid = info.getSSID();
-            if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
-                ssid = ssid.substring(1, ssid.length() - 1);
-            }
-        }
+                            // This value should be wrapped in double quotes, so we need to unwrap it.
+                            // https://stackoverflow.com/a/34848930/5732760
+                            String ssid = null;
+                            if (info.getSupplicantState() == SupplicantState.COMPLETED) {
+                                ssid = info.getSSID();
+                                if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
+                                    ssid = ssid.substring(1, ssid.length() - 1);
+                                }
+                            }
+                            promise.resolve(ssid);
+                        } catch (Exception e) {
+                            promise.reject("error   ", e);
+                        }
 
-        callback.invoke(ssid);
+                    }
+                }).start();
     }
 
     @ReactMethod
-    public void getBSSID(final Callback callback) {
-        WifiInfo info = wifi.getConnectionInfo();
+    public void getBSSID(final Promise promise) throws Exception {
+        new Thread(new Runnable() {
+                public void run() {
+                        try {
+                            WifiInfo info = wifi.getConnectionInfo();
 
-        // https://stackoverflow.com/a/34848930/5732760
-        String bssid = "error";
-        if (info.getSupplicantState() == SupplicantState.COMPLETED) {
-            bssid = wifi.getConnectionInfo().getBSSID();
-        }
+                            // https://stackoverflow.com/a/34848930/5732760
+                            String bssid = null;
+                            if (info.getSupplicantState() == SupplicantState.COMPLETED) {
+                                bssid = wifi.getConnectionInfo().getBSSID();
+                            }
+                            promise.resolve(bssid);
+                        } catch (Exception e) {
+                            promise.reject("error   ", e);
+                        }
 
-        callback.invoke(bssid);
+                    }
+                }).start();
     }
 
     @ReactMethod
-    public void getBroadcast(/*@NonNull String ip, */final Callback callback) {
-        String ipAddress = "error";
+    public void getBroadcast(final Promise promise) throws Exception {
+        new Thread(new Runnable() {
+                public void run() {
+                        try {
+                        String ipAddress = null;
 
-        for (InterfaceAddress address : getInetAddresses()) {
-            if (!address.getAddress().isLoopbackAddress()/*address.getAddress().toString().equalsIgnoreCase(ip)*/) {
-                ipAddress = address.getBroadcast().toString();
-            }
-        }
+                        for (InterfaceAddress address : getInetAddresses()) {
+                            if (!address.getAddress().isLoopbackAddress()/*address.getAddress().toString().equalsIgnoreCase(ip)*/) {
+                                ipAddress = address.getBroadcast().toString();
+                            }
+                        }
+                            promise.resolve(ipAddress);
+                        } catch (Exception e) {
+                            promise.reject("error   ", e);
+                        }
 
-        callback.invoke(ipAddress);
+                    }
+                }).start();
     }
 
     @ReactMethod
-    public void getIPAddress(final Callback callback) {
-        String ipAddress = "error";
-        String tmp = "0.0.0.0";
+    public void getIPAddress(final Promise promise) throws Exception {
+        new Thread(new Runnable() {
+                public void run() {
+                        try {
+                            String ipAddress = null;
+                            String tmp = "0.0.0.0";
 
-        for (InterfaceAddress address : getInetAddresses()) {
-            if (!address.getAddress().isLoopbackAddress()) {
-                tmp = address.getAddress().getHostAddress().toString();
-                if (!inDSLITERange(tmp)) {
-                    ipAddress = tmp;
-                } 
-            }
-        }
+                            for (InterfaceAddress address : getInetAddresses()) {
+                                if (!address.getAddress().isLoopbackAddress()) {
+                                    tmp = address.getAddress().getHostAddress().toString();
+                                    if (!inDSLITERange(tmp)) {
+                                        ipAddress = tmp;
+                                    } 
+                                }
+                            }
+                            promise.resolve(ipAddress);
+                        } catch (Exception e) {
+                             promise.reject("error   ", e);
+                        }
 
-        callback.invoke(ipAddress);
+                }
+            }).start();
+                            
     }
 
     @ReactMethod
-    public void getIPV4Address(final Callback callback) {
-        String ipAddress = "0.0.0.0";
-        String tmp = "0.0.0.0";
-        
-        for (InterfaceAddress address : getInetAddresses()) {
-            if (!address.getAddress().isLoopbackAddress() && address.getAddress() instanceof Inet4Address) {
-                tmp = address.getAddress().getHostAddress().toString();
-                if (!inDSLITERange(tmp)) {
-                    ipAddress = tmp;
-                } 
-            }
-        }
+    public void getIPV4Address(final Promise promise) throws Exception {
+        new Thread(new Runnable() {
+                public void run() {
+                        try {
+                        String ipAddress = null;
+                        String tmp = "0.0.0.0";
+                        
+                        for (InterfaceAddress address : getInetAddresses()) {
+                            if (!address.getAddress().isLoopbackAddress() && address.getAddress() instanceof Inet4Address) {
+                                tmp = address.getAddress().getHostAddress().toString();
+                                if (!inDSLITERange(tmp)) {
+                                    ipAddress = tmp;
+                                } 
+                            }
+                        }
+                            promise.resolve(ipAddress);
+                        } catch (Exception e) {
+                            promise.reject("error   ", e);
+                        }
 
-        callback.invoke(ipAddress);
+                    }
+                }).start();
     }
 
 

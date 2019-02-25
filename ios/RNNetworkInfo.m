@@ -24,120 +24,149 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(getSSID:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(getSSID:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
 {
-    NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
+    @try{
+        NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
 
-    NSDictionary *SSIDInfo;
-    NSString *SSID = @"error";
+        NSDictionary *SSIDInfo;
+        NSString *SSID = @"error";
 
-    for (NSString *interfaceName in interfaceNames) {
-        SSIDInfo = CFBridgingRelease(CNCopyCurrentNetworkInfo((__bridge CFStringRef)interfaceName));
+        for (NSString *interfaceName in interfaceNames) {
+            SSIDInfo = CFBridgingRelease(CNCopyCurrentNetworkInfo((__bridge CFStringRef)interfaceName));
 
-        if (SSIDInfo.count > 0) {
-            SSID = SSIDInfo[@"SSID"];
-            break;
+            if (SSIDInfo.count > 0) {
+                SSID = SSIDInfo[@"SSID"];
+                break;
+            }
+            
         }
+
+        resolve(SSID);
+    }@catch (NSException *exception) {
+        reject(@"error ",@"getSSID",exception.description);            // We'll just silently ignore exception.
     }
 
-    callback(@[SSID]);
 }
 
-RCT_EXPORT_METHOD(getBSSID:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(getBSSID:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
 {
-    NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
-    NSString *BSSID = @"error";
+    @try{
+        NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
+        NSString *BSSID = @"";
 
-    for (NSString* interface in interfaceNames)
-    {
-        CFDictionaryRef networkDetails = CNCopyCurrentNetworkInfo((CFStringRef) interface);
-        if (networkDetails)
+        for (NSString* interface in interfaceNames)
         {
-            BSSID = (NSString *)CFDictionaryGetValue (networkDetails, kCNNetworkInfoKeyBSSID);
-            CFRelease(networkDetails);
-        }
-    }
-
-    callback(@[BSSID]);
-}
-
-RCT_EXPORT_METHOD(getBroadcast:(RCTResponseSenderBlock)callback)
-{
-    NSString *address = @"error";
-    NSString *netmask = @"error";
-
-    struct ifaddrs *interfaces = NULL;
-    struct ifaddrs *temp_addr = NULL;
-    int success = 0;
-
-    success = getifaddrs(&interfaces);
-
-    if (success == 0) {
-        temp_addr = interfaces;
-        while(temp_addr != NULL) {
-            if(temp_addr->ifa_addr->sa_family == AF_INET) {
-                if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"]) {
-                    address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
-                    netmask = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_netmask)->sin_addr)];
-
-                    struct in_addr local_addr;
-                    struct in_addr netmask_addr;
-                    inet_aton([address UTF8String], &local_addr);
-                    inet_aton([netmask UTF8String], &netmask_addr);
-
-                    local_addr.s_addr |= ~(netmask_addr.s_addr);
-
-                    address = [NSString stringWithUTF8String:inet_ntoa(local_addr)];
-                }
+            CFDictionaryRef networkDetails = CNCopyCurrentNetworkInfo((CFStringRef) interface);
+            if (networkDetails)
+            {
+                BSSID = (NSString *)CFDictionaryGetValue (networkDetails, kCNNetworkInfoKeyBSSID);
+                CFRelease(networkDetails);
             }
-            temp_addr = temp_addr->ifa_next;
         }
+
+        resolve(BSSID);
+    }@catch (NSException *exception) {
+        reject(@"error ",@"getBSSID",exception.description);            // We'll just silently ignore exception.
     }
 
-    freeifaddrs(interfaces);
-    callback(@[address]);
 }
 
-RCT_EXPORT_METHOD(getIPAddress:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(getBroadcast:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 {
-    NSString *address = @"error";
+    @try{
+        NSString *address = @"";
+        NSString *netmask = @"error";
 
-    struct ifaddrs *interfaces = NULL;
-    struct ifaddrs *temp_addr = NULL;
-    int success = 0;
+        struct ifaddrs *interfaces = NULL;
+        struct ifaddrs *temp_addr = NULL;
+        int success = 0;
 
-    success = getifaddrs(&interfaces);
+        success = getifaddrs(&interfaces);
 
-    if (success == 0) {
-        temp_addr = interfaces;
-        while(temp_addr != NULL) {
-            if(temp_addr->ifa_addr->sa_family == AF_INET) {
-                if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"]) {
-                    address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
+        if (success == 0) {
+            temp_addr = interfaces;
+            while(temp_addr != NULL) {
+                if(temp_addr->ifa_addr->sa_family == AF_INET) {
+                    if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"]) {
+                        address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
+                        netmask = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_netmask)->sin_addr)];
+
+                        struct in_addr local_addr;
+                        struct in_addr netmask_addr;
+                        inet_aton([address UTF8String], &local_addr);
+                        inet_aton([netmask UTF8String], &netmask_addr);
+
+                        local_addr.s_addr |= ~(netmask_addr.s_addr);
+
+                        address = [NSString stringWithUTF8String:inet_ntoa(local_addr)];
+                    }
                 }
+                temp_addr = temp_addr->ifa_next;
             }
-            temp_addr = temp_addr->ifa_next;
         }
+        freeifaddrs(interfaces);
+        resolve(address);
+    }@catch (NSException *exception) {
+        reject(@"error ",@"getBroadcast",exception.description);            // We'll just silently ignore exception.
     }
-
-    freeifaddrs(interfaces);
-    callback(@[address]);
 }
 
-    RCT_EXPORT_METHOD(getIPV4Address:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(getIPAddress:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        NSString *address = @"";
+
+        struct ifaddrs *interfaces = NULL;
+        struct ifaddrs *temp_addr = NULL;
+        int success = 0;
+
+        success = getifaddrs(&interfaces);
+
+        if (success == 0) {
+            temp_addr = interfaces;
+            while(temp_addr != NULL) {
+                if(temp_addr->ifa_addr->sa_family == AF_INET) {
+                    if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"]) {
+                        address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
+                    }
+                }
+                temp_addr = temp_addr->ifa_next;
+            }
+        }
+        freeifaddrs(interfaces);
+        resolve(address);
+    }@catch (NSException *exception) {
+            reject(@"error ",@"getIPAddress",exception.description);            // We'll just silently ignore exception.
+    }
+}
+
+RCT_EXPORT_METHOD(getIPV4Address:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
     {
-        NSArray *searchArray = @[ IOS_WIFI @"/" IP_ADDR_IPv4, IOS_CELLULAR @"/" IP_ADDR_IPv4 ];
-        NSDictionary *addresses = [self getAllIPAddresses];
-        NSLog(@"addresses: %@", addresses);
-        
-        __block NSString *address;
-        [searchArray enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop)
-         {
-             address = addresses[key];
-             if(address) *stop = YES;
-         } ];
-        NSString *addressToReturn = address ? address : @"0.0.0.0";
-        callback(@[addressToReturn]);
+        @try{
+            NSArray *searchArray = @[ IOS_WIFI @"/" IP_ADDR_IPv4, IOS_CELLULAR @"/" IP_ADDR_IPv4 ];
+            NSDictionary *addresses = [self getAllIPAddresses];
+            NSLog(@"addresses: %@", addresses);
+            
+            __block NSString *address;
+            [searchArray enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop)
+             {
+                 address = addresses[key];
+                 if(address) *stop = YES;
+                 
+             } ];
+            NSString *addressToReturn = address ? address : @"0.0.0.0";
+            resolve(addressToReturn);
+        }@catch (NSException *exception) {
+            reject(@"error ",@"getIPV4Address",exception.description);            // We'll just silently ignore exception.
+        }
+
     }
     
 - (NSDictionary *)getAllIPAddresses
