@@ -4,25 +4,25 @@ import { NativeModules } from 'react-native';
 const { RNNetworkInfo } = NativeModules;
 
 const NetworkInfo = {
-  getSSID(ssid) {
-    RNNetworkInfo.getSSID(ssid);
+  async getSSID() {
+    return await RNNetworkInfo.getSSID();
   },
 
-  getBSSID(bssid) {
-    RNNetworkInfo.getBSSID(bssid);
+  async getBSSID() {
+    return await RNNetworkInfo.getBSSID();
   },
 
-  getBroadcast(ip) {
-    RNNetworkInfo.getBroadcast(ip);
+  async getBroadcast() {
+    return await RNNetworkInfo.getBroadcast();
   },
 
-  getIPAddress(ip) {
-    RNNetworkInfo.getIPAddress(ip);
+  async getIPAddress() {
+    return await RNNetworkInfo.getIPAddress();
   },
 
-  getIPV4Address(ip) {
-    RNNetworkInfo.getIPV4Address(ip);
+  async getIPV4Address() {
+    return await RNNetworkInfo.getIPV4Address();
   }
-}
+};
 
-module.exports = { NetworkInfo }
+module.exports = { NetworkInfo };
