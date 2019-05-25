@@ -29,19 +29,19 @@ yarn add react-native-network-info
 import { NetworkInfo } from 'react-native-network-info';
 
 // Get Local IP
-await NetworkInfo.getIPAddress();
+const ipAddress = await NetworkInfo.getIPAddress();
 
 // Get IPv4 IP
-await NetworkInfo.getIPV4Address()
+const ipv4Address = await NetworkInfo.getIPV4Address()
 
 // Get Broadcast
-await NetworkInfo.getBroadcast()
+const broadcast = await NetworkInfo.getBroadcast()
 
 // Get SSID
-await NetworkInfo.getSSID()
+const ssid = await NetworkInfo.getSSID()
 
 // Get BSSID
-await NetworkInfo.getBSSID()
+const bssid = await NetworkInfo.getBSSID()
 ```
 
 
