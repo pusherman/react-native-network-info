@@ -1,7 +1,7 @@
 ## 5.0.1 - 2019-05-25 (Teensy Weensy)
 
 ### Bug Fix
-- (Android) Remvoed unused Android import (thanks @GuillermoRivera & @MaShizhen)
+- (Android) Removed unused Android import (thanks @GuillermoRivera & @MaShizhen)
 
 ## 5.0.0 - 2019-05-25 (Itsy Bitsy)
 
