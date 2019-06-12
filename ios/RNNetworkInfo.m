@@ -11,6 +11,7 @@
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 #include <net/if.h>
+#include <TargetConditionals.h>
 
 #define IOS_CELLULAR    @"pdp_ip0"
 #define IOS_WIFI        @"en0"
@@ -24,6 +25,7 @@
 
 RCT_EXPORT_MODULE();
 
+#if TARGET_OS_IOS
 RCT_EXPORT_METHOD(getSSID:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -46,7 +48,9 @@ RCT_EXPORT_METHOD(getSSID:(RCTPromiseResolveBlock)resolve
         resolve(NULL);
     }
 }
+#endif
 
+#if TARGET_OS_IOS
 RCT_EXPORT_METHOD(getBSSID:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -68,6 +72,7 @@ RCT_EXPORT_METHOD(getBSSID:(RCTPromiseResolveBlock)resolve
         resolve(NULL);
     }
 }
+#endif
 
 RCT_EXPORT_METHOD(getBroadcast:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
