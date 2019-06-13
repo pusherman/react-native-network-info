@@ -4,5 +4,5 @@ export namespace NetworkInfo {
   function getBroadcast(): Promise<string | null>;
   function getIPAddress(): Promise<string | null>;
   function getIPV4Address(): Promise<string | null>;
-  function getSubnet(): Promise<Array<string> | null>;
+  function getSubnet(): Promise<string | null>;
 }

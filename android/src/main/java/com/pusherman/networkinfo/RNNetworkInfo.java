@@ -183,7 +183,7 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                         }
                     }
                 } catch (Exception e) {
-                    promise.resolve(null);
+                    promise.resolve("0.0.0.0");
                 }
             }
         }).start();
