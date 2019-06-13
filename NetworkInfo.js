@@ -23,6 +23,10 @@ const NetworkInfo = {
   async getIPV4Address() {
     return await RNNetworkInfo.getIPV4Address();
   }
+
+  async getSubnet() {
+    return await RNNetworkInfo.getSubnet();
+  }
 };
 
 module.exports = { NetworkInfo };

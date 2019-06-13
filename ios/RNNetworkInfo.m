@@ -11,6 +11,8 @@
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 #include <net/if.h>
+#include <sys/types.h>
+#include <netinet/in.h>
 #include <TargetConditionals.h>
 
 #define IOS_CELLULAR    @"pdp_ip0"
@@ -165,6 +167,43 @@ RCT_EXPORT_METHOD(getIPV4Address:(RCTPromiseResolveBlock)resolve
     }@catch (NSException *exception) {
         resolve(NULL);
     }
+}
+
+RCT_EXPORT_METHOD(getSubnet:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    NSString *address = @"error";
+    NSString *netmask = @"error";
+    struct ifaddrs *interfaces = NULL;
+    struct ifaddrs *temp_addr = NULL;
+    
+    int success = 0;
+    
+    // retrieve the current interfaces - returns 0 on success
+    success = getifaddrs(&interfaces);
+    if (success == 0)
+    {
+        temp_addr = interfaces;
+        
+        while(temp_addr != NULL)
+        {
+            // check if interface is en0 which is the wifi connection on the iPhone
+            if(temp_addr->ifa_addr->sa_family == AF_INET)
+            {
+                if([@(temp_addr->ifa_name) isEqualToString:@"en0"])
+                {
+                    address = @(inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr));
+                    netmask = @(inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_netmask)->sin_addr));
+                }
+            }
+            
+            temp_addr = temp_addr->ifa_next;
+        }
+    }
+    freeifaddrs(interfaces);
+    
+    NSArray *nativeModuleList = @[netmask];
+    resolve(nativeModuleList);
 }
 
 - (NSDictionary *)getAllIPAddresses
