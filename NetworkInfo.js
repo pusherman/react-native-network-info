@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-import { NativeModules } from 'react-native';
+import { NativeModules } from "react-native";
 const { RNNetworkInfo } = NativeModules;
 
 const NetworkInfo = {
@@ -22,6 +22,10 @@ const NetworkInfo = {
 
   async getIPV4Address() {
     return await RNNetworkInfo.getIPV4Address();
+  },
+
+  async getSubnet() {
+    return await RNNetworkInfo.getSubnet();
   }
 };
 

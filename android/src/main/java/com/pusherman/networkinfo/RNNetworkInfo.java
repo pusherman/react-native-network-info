@@ -20,21 +20,20 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Arrays;
 import java.util.List;
-
+import java.net.Inet6Address;
 
 public class RNNetworkInfo extends ReactContextBaseJavaModule {
     WifiManager wifi;
 
     public static final String TAG = "RNNetworkInfo";
 
-    public static List<String> DSLITE_LIST = Arrays.asList("192.0.0.0", "192.0.0.1", "192.0.0.2", "192.0.0.3", "192.0.0.4", "192.0.0.5", "192.0.0.6", "192.0.0.7");
-
+    public static List<String> DSLITE_LIST = Arrays.asList("192.0.0.0", "192.0.0.1", "192.0.0.2", "192.0.0.3",
+            "192.0.0.4", "192.0.0.5", "192.0.0.6", "192.0.0.7");
 
     public RNNetworkInfo(ReactApplicationContext reactContext) {
         super(reactContext);
 
-        wifi = (WifiManager) reactContext.getApplicationContext()
-                .getSystemService(Context.WIFI_SERVICE);
+        wifi = (WifiManager) reactContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
     }
 
     @Override
@@ -96,7 +95,8 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                     String ipAddress = null;
 
                     for (InterfaceAddress address : getInetAddresses()) {
-                        if (!address.getAddress().isLoopbackAddress()/*address.getAddress().toString().equalsIgnoreCase(ip)*/) {
+                        if (!address.getAddress()
+                                .isLoopbackAddress()/* address.getAddress().toString().equalsIgnoreCase(ip) */) {
                             ipAddress = address.getBroadcast().toString();
                         }
                     }
@@ -160,19 +160,67 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
         }).start();
     }
 
+    @ReactMethod
+    public void getSubnet(final Promise promise) throws Exception {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+
+                    while (interfaces.hasMoreElements()) {
+                        NetworkInterface iface = interfaces.nextElement();
+                        if (iface.isLoopback() || !iface.isUp())
+                            continue;
+
+                        Enumeration<InetAddress> addresses = iface.getInetAddresses();
+                        for (InterfaceAddress address : iface.getInterfaceAddresses()) {
+
+                            InetAddress addr = addresses.nextElement();
+                            if (addr instanceof Inet6Address)
+                                continue;
+
+                            promise.resolve(intToIP(address.getNetworkPrefixLength()));
+                            return;
+                        }
+                    }
+                } catch (Exception e) {
+                    promise.resolve("0.0.0.0");
+                }
+            }
+        }).start();
+    }
+
+    private String intToIP(int ip) {
+        String[] finl = { "", "", "", "" };
+        int k = 1;
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (k <= ip) {
+                    finl[i] += "1";
+                } else {
+                    finl[i] += "0";
+                }
+                k++;
+
+            }
+        }
+        return Integer.parseInt(finl[0], 2) + "." + Integer.parseInt(finl[1], 2) + "." + Integer.parseInt(finl[2], 2)
+                + "." + Integer.parseInt(finl[3], 2);
+    }
 
     private Boolean inDSLITERange(String ip) {
         // Fixes issue https://github.com/pusherman/react-native-network-info/issues/43
-        // Based on comment https://github.com/pusherman/react-native-network-info/issues/43#issuecomment-358360692
+        // Based on comment
+        // https://github.com/pusherman/react-native-network-info/issues/43#issuecomment-358360692
         // added this check in getIPAddress and getIPV4Address
         return RNNetworkInfo.DSLITE_LIST.contains(ip);
     }
 
-
     private List<InterfaceAddress> getInetAddresses() {
         List<InterfaceAddress> addresses = new ArrayList<>();
         try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
                 NetworkInterface intf = en.nextElement();
 
                 for (InterfaceAddress interface_address : intf.getInterfaceAddresses()) {

@@ -11,6 +11,9 @@
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 #include <net/if.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <TargetConditionals.h>
 
 #define IOS_CELLULAR    @"pdp_ip0"
 #define IOS_WIFI        @"en0"
@@ -24,6 +27,7 @@
 
 RCT_EXPORT_MODULE();
 
+#if TARGET_OS_IOS
 RCT_EXPORT_METHOD(getSSID:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -46,7 +50,9 @@ RCT_EXPORT_METHOD(getSSID:(RCTPromiseResolveBlock)resolve
         resolve(NULL);
     }
 }
+#endif
 
+#if TARGET_OS_IOS
 RCT_EXPORT_METHOD(getBSSID:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -68,6 +74,7 @@ RCT_EXPORT_METHOD(getBSSID:(RCTPromiseResolveBlock)resolve
         resolve(NULL);
     }
 }
+#endif
 
 RCT_EXPORT_METHOD(getBroadcast:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
@@ -158,6 +165,45 @@ RCT_EXPORT_METHOD(getIPV4Address:(RCTPromiseResolveBlock)resolve
         NSString *addressToReturn = address ? address : @"0.0.0.0";
         resolve(addressToReturn);
     }@catch (NSException *exception) {
+        resolve(NULL);
+    }
+}
+
+RCT_EXPORT_METHOD(getSubnet:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        NSString *netmask = @"error";
+        struct ifaddrs *interfaces = NULL;
+        struct ifaddrs *temp_addr = NULL;
+        
+        int success = 0;
+        
+        // retrieve the current interfaces - returns 0 on success
+        success = getifaddrs(&interfaces);
+        if (success == 0)
+        {
+            temp_addr = interfaces;
+            
+            while(temp_addr != NULL)
+            {
+                // check if interface is en0 which is the wifi connection on the iPhone
+                if(temp_addr->ifa_addr->sa_family == AF_INET)
+                {
+                    if([@(temp_addr->ifa_name) isEqualToString:@"en0"])
+                    {
+                        netmask = @(inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_netmask)->sin_addr));
+                    }
+                }
+                
+                temp_addr = temp_addr->ifa_next;
+            }
+        }
+        freeifaddrs(interfaces);
+        
+        NSString *addressToReturn = netmask ? netmask : @"0.0.0.0";
+        resolve(addressToReturn);
+    } @catch (NSException *exception) {
         resolve(NULL);
     }
 }
