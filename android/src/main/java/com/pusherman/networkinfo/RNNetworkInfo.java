@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Arrays;
 import java.util.List;
+import java.net.Inet6Address;
 
 public class RNNetworkInfo extends ReactContextBaseJavaModule {
     WifiManager wifi;
