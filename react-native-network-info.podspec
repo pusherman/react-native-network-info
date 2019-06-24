@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "react-native-network-info"
-  s.version      = "5.0.1"
+  s.version      = "5.1.0"
   s.summary      = "Get local network information"
 
   s.homepage     = "https://github.com/pusherman/react-native-network-info"

@@ -1,3 +1,8 @@
+## 5.1.0 - 2019-06-24 (The Upside Down)
+
+- (iOS/Android) Added getSubnet method (thanks @richardvclam)
+- (iOS) Added support for tvOS (thanks @richardvclam & @ChrisOdicho)
+
 ## 5.0.1 - 2019-05-25 (Teensy Weensy)
 
 ### Bug Fix
