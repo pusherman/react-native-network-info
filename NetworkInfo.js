@@ -1,6 +1,6 @@
 "use strict";
 
-import { NativeModules } from "react-native";
+import { NativeModules, Platform } from "react-native";
 const { RNNetworkInfo } = NativeModules;
 
 const NetworkInfo = {
@@ -26,6 +26,13 @@ const NetworkInfo = {
 
   async getSubnet() {
     return await RNNetworkInfo.getSubnet();
+  },
+
+  async getFrequency() {
+    if (Platform.OS !== 'android') {
+      return null;
+    }
+    return await RNNetworkInfo.getFrequency();
   }
 };
 
