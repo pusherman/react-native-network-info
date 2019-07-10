@@ -190,6 +190,21 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
         }).start();
     }
 
+    @ReactMethod
+    public void getFrequency(final Promise promise) throws Exception {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    WifiInfo info = wifi.getConnectionInfo();
+                    final float frequency = info.getFrequency();
+                    promise.resolve(frequency);
+                } catch (Exception e) {
+                    promise.resolve(null);
+                }
+            }
+        }).start();
+    }
+
     private String intToIP(int ip) {
         String[] finl = { "", "", "", "" };
         int k = 1;
