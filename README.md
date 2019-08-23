@@ -46,6 +46,9 @@ const bssid = await NetworkInfo.getBSSID();
 // Get Subnet
 const subnet = await NetworkInfo.getSubnet();
 
+// Get Default Gateway IP
+const subnet = await NetworkInfo.getGatewayIPAddress();
+
 // Get frequency (supported only for Android)
 const frequency = await NetworkInfo.getFrequency();
 ```
