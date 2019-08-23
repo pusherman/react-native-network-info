@@ -153,13 +153,13 @@ RCT_EXPORT_METHOD(getGatewayIPAddress:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
     @try{
-	NSString *ipString = nil;
-	struct in_addr gatewayaddr;
-	int r = getdefaultgateway(&(gatewayaddr.s_addr));
-	if(r >= 0) {
-        	ipString = [NSString stringWithFormat: @"%s",inet_ntoa(gatewayaddr)];
+        NSString *ipString = nil;
+        struct in_addr gatewayaddr;
+        int r = getdefaultgateway(&(gatewayaddr.s_addr));
+        if(r >= 0) {
+            ipString = [NSString stringWithFormat: @"%s",inet_ntoa(gatewayaddr)];
     	}
-        resolve(gatewayaddr);
+        resolve(ipString);
     }@catch (NSException *exception) {
         resolve(NULL);
     }
