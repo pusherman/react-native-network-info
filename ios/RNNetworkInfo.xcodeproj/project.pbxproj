@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		045BEB401B52EA6A0013C1B9 /* RNNetworkInfo.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 045BEB3F1B52EA6A0013C1B9 /* RNNetworkInfo.h */; };
 		045BEB421B52EA6A0013C1B9 /* RNNetworkInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 045BEB411B52EA6A0013C1B9 /* RNNetworkInfo.m */; };
+		32B78637230FB6FA00C6A8CD /* getgateway.c in Sources */ = {isa = PBXBuildFile; fileRef = 32B78634230FB6FA00C6A8CD /* getgateway.c */; };
 		A051C2CC22B1C13E001E1191 /* RNNetworkInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 045BEB411B52EA6A0013C1B9 /* RNNetworkInfo.m */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +39,9 @@
 		045BEB3C1B52EA6A0013C1B9 /* libRNNetworkInfo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNNetworkInfo.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		045BEB3F1B52EA6A0013C1B9 /* RNNetworkInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNetworkInfo.h; sourceTree = "<group>"; };
 		045BEB411B52EA6A0013C1B9 /* RNNetworkInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNetworkInfo.m; sourceTree = "<group>"; };
+		32B78634230FB6FA00C6A8CD /* getgateway.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getgateway.c; sourceTree = "<group>"; };
+		32B78635230FB6FA00C6A8CD /* getgateway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getgateway.h; sourceTree = "<group>"; };
+		32B78636230FB6FA00C6A8CD /* route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = route.h; sourceTree = "<group>"; };
 		A051C2C322B1C080001E1191 /* libRNNetworkInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libRNNetworkInfo-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -62,6 +66,9 @@
 		045BEB331B52EA6A0013C1B9 = {
 			isa = PBXGroup;
 			children = (
+				32B78634230FB6FA00C6A8CD /* getgateway.c */,
+				32B78635230FB6FA00C6A8CD /* getgateway.h */,
+				32B78636230FB6FA00C6A8CD /* route.h */,
 				045BEB3F1B52EA6A0013C1B9 /* RNNetworkInfo.h */,
 				045BEB411B52EA6A0013C1B9 /* RNNetworkInfo.m */,
 				045BEB3D1B52EA6A0013C1B9 /* Products */,
@@ -158,6 +165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				045BEB421B52EA6A0013C1B9 /* RNNetworkInfo.m in Sources */,
+				32B78637230FB6FA00C6A8CD /* getgateway.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
