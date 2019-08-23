@@ -1,6 +1,5 @@
 //
 //  getgateway.h
-//  OBDInterface
 //
 //  This is pulled directly from https://stackoverflow.com/a/29440193/1120802
 //
