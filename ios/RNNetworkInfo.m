@@ -7,6 +7,7 @@
 //
 
 #import "RNNetworkInfo.h"
+#import "getgateway.h"
 
 #import <ifaddrs.h>
 #import <arpa/inet.h>
@@ -143,6 +144,22 @@ RCT_EXPORT_METHOD(getIPAddress:(RCTPromiseResolveBlock)resolve
         }
         freeifaddrs(interfaces);
         resolve(address);
+    }@catch (NSException *exception) {
+        resolve(NULL);
+    }
+}
+
+RCT_EXPORT_METHOD(getGatewayIPAddress:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try{
+        NSString *ipString = nil;
+        struct in_addr gatewayaddr;
+        int r = getdefaultgateway(&(gatewayaddr.s_addr));
+        if(r >= 0) {
+            ipString = [NSString stringWithFormat: @"%s",inet_ntoa(gatewayaddr)];
+    	}
+        resolve(ipString);
     }@catch (NSException *exception) {
         resolve(NULL);
     }

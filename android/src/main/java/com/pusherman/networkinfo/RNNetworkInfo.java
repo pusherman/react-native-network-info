@@ -1,6 +1,7 @@
 package com.pusherman.networkinfo;
 
 import android.content.Context;
+import android.net.DhcpInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.SupplicantState;
@@ -185,6 +186,28 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                     }
                 } catch (Exception e) {
                     promise.resolve("0.0.0.0");
+                }
+            }
+        }).start();
+    }
+
+    @ReactMethod
+    public void getGatewayIPAddress(final Promise promise) throws Exception {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    DhcpInfo dhcpInfo = wifi.getDhcpInfo();
+                    int gatewayIPInt = dhcpInfo.gateway;
+                    String gatewayIP = String.format(
+                      "%d.%d.%d.%d",
+                      ((gatewayIPInt) & 0xFF),
+                      ((gatewayIPInt >> 8 ) & 0xFF),
+                      ((gatewayIPInt >> 16) & 0xFF),
+                      ((gatewayIPInt >> 24) & 0xFF)
+                    );
+                    promise.resolve(gatewayIP);
+                } catch (Exception e) {
+                    promise.resolve(null);
                 }
             }
         }).start();

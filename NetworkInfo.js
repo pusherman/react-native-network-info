@@ -24,6 +24,10 @@ const NetworkInfo = {
     return await RNNetworkInfo.getIPV4Address();
   },
 
+  async getGatewayIPAddress() {
+    return await RNNetworkInfo.getGatewayIPAddress();
+  },
+
   async getSubnet() {
     return await RNNetworkInfo.getSubnet();
   },
