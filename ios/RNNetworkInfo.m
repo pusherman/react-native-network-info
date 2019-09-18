@@ -186,6 +186,31 @@ RCT_EXPORT_METHOD(getIPV4Address:(RCTPromiseResolveBlock)resolve
     }
 }
 
+/**
+    Gets the device's WiFi interface IP address
+    @return device's WiFi IP if connected to WiFi, else '0.0.0.0'
+*/
+RCT_EXPORT_METHOD(getWIFIIPV4Address:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try{
+        NSArray *searchArray = @[ IOS_WIFI @"/" IP_ADDR_IPv4 ];
+        NSDictionary *addresses = [self getAllIPAddresses];
+        NSLog(@"addresses: %@", addresses);
+
+        __block NSString *address;
+        [searchArray enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop)
+         {
+             address = addresses[key];
+             if(address) *stop = YES;
+         } ];
+        NSString *addressToReturn = address ? address : @"0.0.0.0";
+        resolve(addressToReturn);
+    }@catch (NSException *exception) {
+        resolve(NULL);
+    }
+}
+
 RCT_EXPORT_METHOD(getSubnet:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
