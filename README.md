@@ -34,6 +34,9 @@ const ipAddress = await NetworkInfo.getIPAddress();
 // Get IPv4 IP
 const ipv4Address = await NetworkInfo.getIPV4Address();
 
+// Get WIFI IPv4 IP
+const wifiIpv4Address = await NetworkInfo.getWIFIIPV4Address();
+
 // Get Broadcast
 const broadcast = await NetworkInfo.getBroadcast();
 

@@ -24,6 +24,10 @@ const NetworkInfo = {
     return await RNNetworkInfo.getIPV4Address();
   },
 
+  async getWIFIIPV4Address() {
+    return await RNNetworkInfo.getWIFIIPV4Address();
+  },
+
   async getGatewayIPAddress() {
     return await RNNetworkInfo.getGatewayIPAddress();
   },
