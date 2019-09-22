@@ -1,7 +1,6 @@
 export namespace NetworkInfo {
-  function getSSID(): Promise<string | null>;
-  function getBSSID(): Promise<string | null>;
-  function getBroadcast(): Promise<string | null>;
-  function getIPAddress(): Promise<string | null>;
-  function getIPV4Address(): Promise<string | null>;
+  function getBSSID<T>(fallback?: T): Promise<string | T>;
+  function getBroadcast<T>(fallback?: T): Promise<string | T>;
+  function getIPAddress<T>(fallback?: T): Promise<string | T>;
+  function getIPV4Address<T>(fallback?: T): Promise<string | T>;
 }

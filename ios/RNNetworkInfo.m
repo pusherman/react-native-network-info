@@ -41,9 +41,17 @@ RCT_EXPORT_METHOD(getSSID:(RCTPromiseResolveBlock)resolve
                 break;
             }
         }
+        
+        if (SSID == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"SSIDNotFoundException"
+                                      reason:@"SSID Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
         resolve(SSID);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 
@@ -63,9 +71,17 @@ RCT_EXPORT_METHOD(getBSSID:(RCTPromiseResolveBlock)resolve
                 CFRelease(networkDetails);
             }
         }
+        
+        if (SSID == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"BSSIDNotFoundException"
+                                      reason:@"BSSID Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
         resolve(BSSID);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 
@@ -103,11 +119,25 @@ RCT_EXPORT_METHOD(getBroadcast:(RCTPromiseResolveBlock)resolve
                 }
                 temp_addr = temp_addr->ifa_next;
             }
+        } else {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"BroadcastNotFoundException"
+                                      reason:@"getifaddrs has been Not successful"
+                                      userInfo:nil];
+            @throw exception;
+        }
+        
+        if (address == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"BroadcastNotFoundException"
+                                      reason:@"Broadcast Not Found"
+                                      userInfo:nil];
+            @throw exception;
         }
         freeifaddrs(interfaces);
         resolve(address);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 
@@ -133,11 +163,25 @@ RCT_EXPORT_METHOD(getIPAddress:(RCTPromiseResolveBlock)resolve
                 }
                 temp_addr = temp_addr->ifa_next;
             }
+        } else {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"IPAddressNotFoundException"
+                                      reason:@"getifaddrs has been Not successful"
+                                      userInfo:nil];
+            @throw exception;
+        }
+        
+        if (address == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"IPAddressNotFoundException"
+                                      reason:@"IPAddress Not Found"
+                                      userInfo:nil];
+            @throw exception;
         }
         freeifaddrs(interfaces);
         resolve(address);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 
@@ -155,10 +199,17 @@ RCT_EXPORT_METHOD(getIPV4Address:(RCTPromiseResolveBlock)resolve
              address = addresses[key];
              if(address) *stop = YES;
          } ];
-        NSString *addressToReturn = address ? address : @"0.0.0.0";
+        
+        if (!address) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"IPV4AddressNotFoundException"
+                                      reason:@"IPV4Address Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
         resolve(addressToReturn);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 
