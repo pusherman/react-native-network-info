@@ -1,3 +1,24 @@
+## 5.1.0 - 2019-06-24 (The Upside Down)
+
+- (iOS/Android) Added getSubnet method (thanks @richardvclam)
+- (iOS) Added support for tvOS (thanks @richardvclam & @ChrisOdicho)
+
+## 5.0.1 - 2019-05-25 (Teensy Weensy)
+
+### Bug Fix
+- (Android) Removed unused Android import (thanks @GuillermoRivera & @MaShizhen)
+
+## 5.0.0 - 2019-05-25 (Itsy Bitsy)
+
+### Breaking Changes
+- (iOS/Android) Switched from callbacks to async methods (thanks @hosseinmd)
+- (Android) Migrated to AndroidX (thanks @rafcontreras)
+
+### Bug Fix
+- (Android) Updated dependency configurations for Android (thanks @robwalkerco)
+- (npm) Removed android/build from npm package to reduce size
+
+
 ## 4.0.1 - 2019-01-09 (Traveling On)
 
 ### Bug Fix
