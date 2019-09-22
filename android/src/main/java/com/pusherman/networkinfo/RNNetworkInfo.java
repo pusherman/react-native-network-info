@@ -171,7 +171,9 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
             public void run() {
                 try {
                     WifiInfo info = wifi.getConnectionInfo();
-		            String stringip = intToIP(info.getIpAddress());
+                    int ipAddress = info.getIpAddress();
+		            String stringip = String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff),
+                                                (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
 		            promise.resolve(stringip);
                 }catch (Exception e) {
                     promise.resolve(null);
