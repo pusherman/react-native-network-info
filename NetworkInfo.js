@@ -21,6 +21,11 @@ const NetworkInfo = {
   },
 
   async getIPV4Address() {
+    const wifiIP = await RNNetworkInfo.getWIFIIPV4Address();
+    if (wifiIP && wifiIP !== '0.0.0.0') {
+      return wifiIP;
+    }
+    
     return await RNNetworkInfo.getIPV4Address();
   },
 
