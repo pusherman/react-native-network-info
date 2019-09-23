@@ -21,11 +21,12 @@ const NetworkInfo = {
   },
 
   async getIPV4Address() {
-    return await RNNetworkInfo.getIPV4Address();
-  },
-
-  async getWIFIIPV4Address() {
-    return await RNNetworkInfo.getWIFIIPV4Address();
+    let wifiIP = await RNNetworkInfo.getWIFIIPV4Address();
+    if (wifiIP && wifiIP != '0.0.0.0') {
+      return wifiIP;
+    } else {
+      return await RNNetworkInfo.getIPV4Address();
+    }
   },
 
   async getGatewayIPAddress() {
