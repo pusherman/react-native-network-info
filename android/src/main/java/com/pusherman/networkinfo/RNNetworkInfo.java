@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+
+import androidx.annotation.NonNull;
+
 import android.net.wifi.SupplicantState;
 import android.util.Log;
 
@@ -57,10 +60,12 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                         if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
                             ssid = ssid.substring(1, ssid.length() - 1);
                         }
+                    } else {
+                        throw new Exception("The Supplicant State has not been completed");
                     }
                     promise.resolve(ssid);
                 } catch (Exception e) {
-                    promise.resolve(null);
+                    promise.reject(e);
                 }
 
             }
@@ -77,11 +82,13 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                     // https://stackoverflow.com/a/34848930/5732760
                     String bssid = null;
                     if (info.getSupplicantState() == SupplicantState.COMPLETED) {
-                        bssid = wifi.getConnectionInfo().getBSSID();
+                        bssid = info.getBSSID();
+                    } else {
+                        throw new Exception("The Supplicant State has not been completed");
                     }
                     promise.resolve(bssid);
                 } catch (Exception e) {
-                    promise.resolve(null);
+                    promise.reject(e);
                 }
 
             }
@@ -101,9 +108,12 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                             ipAddress = address.getBroadcast().toString();
                         }
                     }
+                    if (ipAddress == null) {
+                        throw new Exception("Broadcast address not found");
+                    }
                     promise.resolve(ipAddress);
                 } catch (Exception e) {
-                    promise.resolve(null);
+                    promise.reject(e);
                 }
 
             }
@@ -126,9 +136,12 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                             }
                         }
                     }
+                    if (ipAddress == null) {
+                        throw new Exception("IP address not found");
+                    }
                     promise.resolve(ipAddress);
                 } catch (Exception e) {
-                    promise.resolve(null);
+                    promise.reject(e);
                 }
 
             }
@@ -152,9 +165,12 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                             }
                         }
                     }
+                    if (ipAddress == null) {
+                        throw new Exception("IPV4 address not found");
+                    }
                     promise.resolve(ipAddress);
                 } catch (Exception e) {
-                    promise.resolve(null);
+                    promise.reject(e);
                 }
 
             }
@@ -176,7 +192,7 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                                                 (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
 		            promise.resolve(stringip);
                 }catch (Exception e) {
-                    promise.resolve(null);
+                    promise.reject(e);
                 }
             }
         }).start();
@@ -205,8 +221,9 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                             return;
                         }
                     }
+                    throw new Exception("Subnet not found");
                 } catch (Exception e) {
-                    promise.resolve("0.0.0.0");
+                    promise.reject(e);
                 }
             }
         }).start();
@@ -220,15 +237,15 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                     DhcpInfo dhcpInfo = wifi.getDhcpInfo();
                     int gatewayIPInt = dhcpInfo.gateway;
                     String gatewayIP = String.format(
-                      "%d.%d.%d.%d",
-                      ((gatewayIPInt) & 0xFF),
-                      ((gatewayIPInt >> 8 ) & 0xFF),
-                      ((gatewayIPInt >> 16) & 0xFF),
-                      ((gatewayIPInt >> 24) & 0xFF)
+                            "%d.%d.%d.%d",
+                            ((gatewayIPInt) & 0xFF),
+                            ((gatewayIPInt >> 8 ) & 0xFF),
+                            ((gatewayIPInt >> 16) & 0xFF),
+                            ((gatewayIPInt >> 24) & 0xFF)
                     );
                     promise.resolve(gatewayIP);
                 } catch (Exception e) {
-                    promise.resolve(null);
+                    promise.reject(e);
                 }
             }
         }).start();
@@ -243,7 +260,7 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                     final float frequency = info.getFrequency();
                     promise.resolve(frequency);
                 } catch (Exception e) {
-                    promise.resolve(null);
+                    promise.reject(e);
                 }
             }
         }).start();
@@ -270,7 +287,7 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
 
     private Boolean inDSLITERange(String ip) {
         // Fixes issue https://github.com/pusherman/react-native-network-info/issues/43
-        // Based on comment
+        // Based on comment 
         // https://github.com/pusherman/react-native-network-info/issues/43#issuecomment-358360692
         // added this check in getIPAddress and getIPV4Address
         return RNNetworkInfo.DSLITE_LIST.contains(ip);
