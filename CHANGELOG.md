@@ -1,3 +1,9 @@
+## 5.2.0 - 2019-09-23 (Yellow Mark)
+
+- (iOS/Android) Added getGatewayIPAddress method (thanks @parrotmac)
+- (iOS/Android) Updated getIPV4Address to return WIFI IP if connected (thanks @Rapsssito)
+- (Android) Added getFrequency to get wifi frequency (thanks @antonkulyk)
+
 ## 5.1.0 - 2019-06-24 (The Upside Down)
 
 - (iOS/Android) Added getSubnet method (thanks @richardvclam)

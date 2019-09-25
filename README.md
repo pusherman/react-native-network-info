@@ -31,7 +31,7 @@ import { NetworkInfo } from "react-native-network-info";
 // Get Local IP
 const ipAddress = await NetworkInfo.getIPAddress();
 
-// Get IPv4 IP
+// Get IPv4 IP (priority: WiFi first, cellular second)
 const ipv4Address = await NetworkInfo.getIPV4Address();
 
 // Get Broadcast

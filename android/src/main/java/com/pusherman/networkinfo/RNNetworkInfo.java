@@ -176,6 +176,27 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
         }).start();
     }
 
+    /**
+        Gets the device's WiFi interface IP address
+        @return device's WiFi IP if connected to WiFi, else '0.0.0.0'
+     */
+    @ReactMethod
+    public void getWIFIIPV4Address(final Promise promise) throws Exception {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    WifiInfo info = wifi.getConnectionInfo();
+                    int ipAddress = info.getIpAddress();
+		            String stringip = String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff),
+                                                (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
+		            promise.resolve(stringip);
+                }catch (Exception e) {
+                    promise.resolve(null);
+                }
+            }
+        }).start();
+    }
+
     @ReactMethod
     public void getSubnet(final Promise promise) throws Exception {
         new Thread(new Runnable() {

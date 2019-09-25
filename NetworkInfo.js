@@ -31,6 +31,11 @@ const NetworkInfo = {
   },
 
   async getIPV4Address(fallback) {
+    const wifiIP = await handleError(RNNetworkInfo.getWIFIIPV4Address);
+    if (wifiIP) {
+      return wifiIP;
+    }
+
     return await handleError(RNNetworkInfo.getIPV4Address, fallback);
   },
 
