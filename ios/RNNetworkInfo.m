@@ -261,10 +261,17 @@ RCT_EXPORT_METHOD(getWIFIIPV4Address:(RCTPromiseResolveBlock)resolve
              address = addresses[key];
              if(address) *stop = YES;
          } ];
-        NSString *addressToReturn = address ? address : @"0.0.0.0";
-        resolve(addressToReturn);
+         if(address){
+            resolve(address);
+         } else {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"WIFIIPV4AddressNotFoundException"
+                                      reason:@"WIFIIPV4Address Not Found"
+                                      userInfo:nil];
+            @throw exception;
+         }
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 

@@ -191,7 +191,7 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                                                 (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
 		            promise.resolve(stringip);
                 }catch (Exception e) {
-                    promise.resolve(null);
+                    promise.reject(e);
                 }
             }
         }).start();
