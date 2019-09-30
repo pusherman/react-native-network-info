@@ -1,3 +1,8 @@
+## 5.2.1 - 2019-09-23 (Yellow Check)
+
+### Bug Fix
+- (iOS) Fixed iOS compile error when auto linking (thanks @zusinShinpei)
+
 ## 5.2.0 - 2019-09-23 (Yellow Mark)
 
 - (iOS/Android) Added getGatewayIPAddress method (thanks @parrotmac)

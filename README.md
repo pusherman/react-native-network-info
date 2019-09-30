@@ -21,6 +21,16 @@ yarn add react-native-network-info
 
 ### Linking the library
 
+#### Using React Native >= 0.60
+
+Linking the package manually is not required anymore with Autolinking.
+
+#### `iOS` also requires CocoaPods install
+
+$ cd ios && pod install && cd ..
+
+#### Using React Native >= 0.60
+
 `react-native link react-native-network-info`
 
 ## Usage
@@ -29,33 +39,49 @@ yarn add react-native-network-info
 import { NetworkInfo } from "react-native-network-info";
 
 // Get Local IP
-const ipAddress = await NetworkInfo.getIPAddress();
+NetworkInfo.getIPAddress().then(ipAddress => {
+  console.log(ipAddress);
+});
 
 // Get IPv4 IP (priority: WiFi first, cellular second)
-const ipv4Address = await NetworkInfo.getIPV4Address();
+NetworkInfo.getIPV4Address().then(ipv4Address => {
+  console.log(ipv4Address);
+});
 
 // Get Broadcast
-const broadcast = await NetworkInfo.getBroadcast();
+NetworkInfo.getBroadcast().then(broadcast => {
+  console.log(broadcast);
+});
 
 // Get SSID
-const ssid = await NetworkInfo.getSSID();
+NetworkInfo.getSSID().then(ssid => {
+  console.log(ssid);
+});
 
 // Get BSSID
-const bssid = await NetworkInfo.getBSSID();
+NetworkInfo.getBSSID().then(bssid => {
+  console.log(bssid);
+});
 
 // Get Subnet
-const subnet = await NetworkInfo.getSubnet();
+NetworkInfo.getSubnet().then(subnet => {
+  console.log(subnet);
+});
 
 // Get Default Gateway IP
-const defaultGateway = await NetworkInfo.getGatewayIPAddress();
+NetworkInfo.getGatewayIPAddress().then(defaultGateway => {
+  console.log(defaultGateway);
+});
 
 // Get frequency (supported only for Android)
-const frequency = await NetworkInfo.getFrequency();
+NetworkInfo.getFrequency().then(frequency => {
+  console.log(frequency);
+});
 ```
 
 ### Manually Linking the Library
 
-If `react-native link` fails.
+If `react-native link` fails and you are not using the auto linking provided in React Native >= 0.60
 
 ### `iOS`
 
