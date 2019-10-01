@@ -27,16 +27,16 @@ Linking the package manually is not required anymore with Autolinking.
 
 #### `iOS` also requires CocoaPods install
 
-$ cd ios && pod install && cd ..
+$ `cd ios && pod install && cd ..`
 
 #### Using React Native >= 0.60
 
-`react-native link react-native-network-info`
+$ `react-native link react-native-network-info`
 
 ## Usage
 
 ```javascript
-import { NetworkInfo } from "react-native-network-info";
+import {NetworkInfo} from 'react-native-network-info';
 
 // Get Local IP
 NetworkInfo.getIPAddress().then(ipAddress => {
