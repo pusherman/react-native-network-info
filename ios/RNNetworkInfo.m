@@ -7,10 +7,14 @@
 //
 
 #import "RNNetworkInfo.h"
+#import "getgateway.h"
 
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 #include <net/if.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <TargetConditionals.h>
 
 #define IOS_CELLULAR    @"pdp_ip0"
 #define IOS_WIFI        @"en0"
@@ -24,6 +28,7 @@
 
 RCT_EXPORT_MODULE();
 
+#if TARGET_OS_IOS
 RCT_EXPORT_METHOD(getSSID:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -41,12 +46,22 @@ RCT_EXPORT_METHOD(getSSID:(RCTPromiseResolveBlock)resolve
                 break;
             }
         }
+        
+        if (SSID == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"SSIDNotFoundException"
+                                      reason:@"SSID Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
         resolve(SSID);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
+#endif
 
+#if TARGET_OS_IOS
 RCT_EXPORT_METHOD(getBSSID:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -63,11 +78,20 @@ RCT_EXPORT_METHOD(getBSSID:(RCTPromiseResolveBlock)resolve
                 CFRelease(networkDetails);
             }
         }
+        
+        if (BSSID == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"BSSIDNotFoundException"
+                                      reason:@"BSSID Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
         resolve(BSSID);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
+#endif
 
 RCT_EXPORT_METHOD(getBroadcast:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
@@ -103,11 +127,28 @@ RCT_EXPORT_METHOD(getBroadcast:(RCTPromiseResolveBlock)resolve
                 }
                 temp_addr = temp_addr->ifa_next;
             }
+        } else {
+            freeifaddrs(interfaces);
+
+            NSException* exception = [NSException
+                                      exceptionWithName:@"BroadcastNotFoundException"
+                                      reason:@"getifaddrs has been Not successful"
+                                      userInfo:nil];
+            @throw exception;
         }
+
         freeifaddrs(interfaces);
+
+        if (address == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"BroadcastNotFoundException"
+                                      reason:@"Broadcast Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
         resolve(address);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 
@@ -133,11 +174,44 @@ RCT_EXPORT_METHOD(getIPAddress:(RCTPromiseResolveBlock)resolve
                 }
                 temp_addr = temp_addr->ifa_next;
             }
+        } else {
+            freeifaddrs(interfaces);
+
+            NSException* exception = [NSException
+                                      exceptionWithName:@"IPAddressNotFoundException"
+                                      reason:@"getifaddrs has been Not successful"
+                                      userInfo:nil];
+            @throw exception;
         }
         freeifaddrs(interfaces);
+        
+        if (address == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"IPAddressNotFoundException"
+                                      reason:@"IPAddress Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
+
         resolve(address);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
+    }
+}
+
+RCT_EXPORT_METHOD(getGatewayIPAddress:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try{
+        NSString *ipString = nil;
+        struct in_addr gatewayaddr;
+        int r = getdefaultgateway(&(gatewayaddr.s_addr));
+        if(r >= 0) {
+            ipString = [NSString stringWithFormat: @"%s",inet_ntoa(gatewayaddr)];
+    	}
+        resolve(ipString);
+    }@catch (NSException *exception) {
+        reject(exception);
     }
 }
 
@@ -155,10 +229,96 @@ RCT_EXPORT_METHOD(getIPV4Address:(RCTPromiseResolveBlock)resolve
              address = addresses[key];
              if(address) *stop = YES;
          } ];
-        NSString *addressToReturn = address ? address : @"0.0.0.0";
-        resolve(addressToReturn);
+        
+        if (address) {
+            resolve(address);
+        }
+            NSException* exception = [NSException
+                                      exceptionWithName:@"IPV4AddressNotFoundException"
+                                      reason:@"IPV4Address Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
+    }
+}
+
+/**
+    Gets the device's WiFi interface IP address
+    @return device's WiFi IP if connected to WiFi, else '0.0.0.0'
+*/
+RCT_EXPORT_METHOD(getWIFIIPV4Address:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try{
+        NSArray *searchArray = @[ IOS_WIFI @"/" IP_ADDR_IPv4 ];
+        NSDictionary *addresses = [self getAllIPAddresses];
+        NSLog(@"addresses: %@", addresses);
+
+        __block NSString *address;
+        [searchArray enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop)
+         {
+             address = addresses[key];
+             if(address) *stop = YES;
+         } ];
+         if(address){
+            resolve(address);
+         } else {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"WIFIIPV4AddressNotFoundException"
+                                      reason:@"WIFIIPV4Address Not Found"
+                                      userInfo:nil];
+            @throw exception;
+         }
+    }@catch (NSException *exception) {
+        reject(exception);
+    }
+}
+
+RCT_EXPORT_METHOD(getSubnet:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        NSString *netmask = NULL;
+        struct ifaddrs *interfaces = NULL;
+        struct ifaddrs *temp_addr = NULL;
+        
+        int success = 0;
+        
+        // retrieve the current interfaces - returns 0 on success
+        success = getifaddrs(&interfaces);
+        if (success == 0)
+        {
+            temp_addr = interfaces;
+            
+            while(temp_addr != NULL)
+            {
+                // check if interface is en0 which is the wifi connection on the iPhone
+                if(temp_addr->ifa_addr->sa_family == AF_INET)
+                {
+                    if([@(temp_addr->ifa_name) isEqualToString:@"en0"])
+                    {
+                        netmask = @(inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_netmask)->sin_addr));
+                    }
+                }
+                
+                temp_addr = temp_addr->ifa_next;
+            }
+        }
+        freeifaddrs(interfaces);
+
+        if (netmask == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"IPV4AddressNotFoundException"
+                                      reason:@"IPV4Address Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
+
+        resolve(netmask);
+    } @catch (NSException *exception) {
+        reject(exception);
     }
 }
 

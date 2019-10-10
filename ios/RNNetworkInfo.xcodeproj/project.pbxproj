@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		045BEB401B52EA6A0013C1B9 /* RNNetworkInfo.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 045BEB3F1B52EA6A0013C1B9 /* RNNetworkInfo.h */; };
 		045BEB421B52EA6A0013C1B9 /* RNNetworkInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 045BEB411B52EA6A0013C1B9 /* RNNetworkInfo.m */; };
+		32B78637230FB6FA00C6A8CD /* getgateway.c in Sources */ = {isa = PBXBuildFile; fileRef = 32B78634230FB6FA00C6A8CD /* getgateway.c */; };
+		A051C2CC22B1C13E001E1191 /* RNNetworkInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 045BEB411B52EA6A0013C1B9 /* RNNetworkInfo.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -22,16 +24,36 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A051C2C122B1C080001E1191 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		045BEB3C1B52EA6A0013C1B9 /* libRNNetworkInfo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNNetworkInfo.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		045BEB3F1B52EA6A0013C1B9 /* RNNetworkInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNetworkInfo.h; sourceTree = "<group>"; };
 		045BEB411B52EA6A0013C1B9 /* RNNetworkInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNetworkInfo.m; sourceTree = "<group>"; };
+		32B78634230FB6FA00C6A8CD /* getgateway.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getgateway.c; sourceTree = "<group>"; };
+		32B78635230FB6FA00C6A8CD /* getgateway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getgateway.h; sourceTree = "<group>"; };
+		32B78636230FB6FA00C6A8CD /* route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = route.h; sourceTree = "<group>"; };
+		A051C2C322B1C080001E1191 /* libRNNetworkInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libRNNetworkInfo-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		045BEB391B52EA6A0013C1B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A051C2C022B1C080001E1191 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -44,6 +66,9 @@
 		045BEB331B52EA6A0013C1B9 = {
 			isa = PBXGroup;
 			children = (
+				32B78634230FB6FA00C6A8CD /* getgateway.c */,
+				32B78635230FB6FA00C6A8CD /* getgateway.h */,
+				32B78636230FB6FA00C6A8CD /* route.h */,
 				045BEB3F1B52EA6A0013C1B9 /* RNNetworkInfo.h */,
 				045BEB411B52EA6A0013C1B9 /* RNNetworkInfo.m */,
 				045BEB3D1B52EA6A0013C1B9 /* Products */,
@@ -54,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				045BEB3C1B52EA6A0013C1B9 /* libRNNetworkInfo.a */,
+				A051C2C322B1C080001E1191 /* libRNNetworkInfo-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -78,6 +104,23 @@
 			productReference = 045BEB3C1B52EA6A0013C1B9 /* libRNNetworkInfo.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		A051C2C222B1C080001E1191 /* RNNetworkInfo-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A051C2CB22B1C080001E1191 /* Build configuration list for PBXNativeTarget "RNNetworkInfo-tvOS" */;
+			buildPhases = (
+				A051C2BF22B1C080001E1191 /* Sources */,
+				A051C2C022B1C080001E1191 /* Frameworks */,
+				A051C2C122B1C080001E1191 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RNNetworkInfo-tvOS";
+			productName = "RNNetworkInfo-tvOS";
+			productReference = A051C2C322B1C080001E1191 /* libRNNetworkInfo-tvOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -90,6 +133,11 @@
 					045BEB3B1B52EA6A0013C1B9 = {
 						CreatedOnToolsVersion = 6.4;
 					};
+					A051C2C222B1C080001E1191 = {
+						CreatedOnToolsVersion = 10.2.1;
+						DevelopmentTeam = A7LNG47RWM;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 045BEB371B52EA6A0013C1B9 /* Build configuration list for PBXProject "RNNetworkInfo" */;
@@ -97,6 +145,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 045BEB331B52EA6A0013C1B9;
@@ -105,6 +154,7 @@
 			projectRoot = "";
 			targets = (
 				045BEB3B1B52EA6A0013C1B9 /* RNNetworkInfo */,
+				A051C2C222B1C080001E1191 /* RNNetworkInfo-tvOS */,
 			);
 		};
 /* End PBXProject section */
@@ -115,6 +165,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				045BEB421B52EA6A0013C1B9 /* RNNetworkInfo.m in Sources */,
+				32B78637230FB6FA00C6A8CD /* getgateway.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A051C2BF22B1C080001E1191 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A051C2CC22B1C13E001E1191 /* RNNetworkInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +292,73 @@
 			};
 			name = Release;
 		};
+		A051C2C922B1C080001E1191 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = A7LNG47RWM;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.2;
+			};
+			name = Debug;
+		};
+		A051C2CA22B1C080001E1191 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A7LNG47RWM;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -250,6 +376,15 @@
 			buildConfigurations = (
 				045BEB511B52EA6B0013C1B9 /* Debug */,
 				045BEB521B52EA6B0013C1B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A051C2CB22B1C080001E1191 /* Build configuration list for PBXNativeTarget "RNNetworkInfo-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A051C2C922B1C080001E1191 /* Debug */,
+				A051C2CA22B1C080001E1191 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
