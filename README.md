@@ -29,7 +29,7 @@ Linking the package manually is not required anymore with Autolinking.
 
 $ `cd ios && pod install && cd ..`
 
-#### Using React Native >= 0.60
+#### Using React Native < 0.60
 
 $ `react-native link react-native-network-info`
 
