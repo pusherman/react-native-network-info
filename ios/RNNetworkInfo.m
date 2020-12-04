@@ -15,6 +15,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <TargetConditionals.h>
+#import <NetworkExtension/NetworkExtension.h>
 
 #define IOS_CELLULAR    @"pdp_ip0"
 #define IOS_WIFI        @"en0"
@@ -32,6 +33,13 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(getSSID:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
+    if (@available(iOS 14.0, *)) {
+        [NEHotspotNetwork fetchCurrentWithCompletionHandler:^(NEHotspotNetwork * _Nullable currentNetwork) {
+            resolve(currentNetwork.SSID);
+        }];
+        return;
+    }
+
     @try{
         NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
         
