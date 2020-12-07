@@ -65,6 +65,13 @@ RCT_EXPORT_METHOD(getSSID:(RCTPromiseResolveBlock)resolve
 RCT_EXPORT_METHOD(getBSSID:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
+    if (@available(iOS 14.0, *)) {
+        [NEHotspotNetwork fetchCurrentWithCompletionHandler:^(NEHotspotNetwork * _Nullable currentNetwork) {
+            resolve(currentNetwork.BSSID);
+        }];
+        return;
+    }
+
     @try{
         NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
         NSString *BSSID = NULL;
