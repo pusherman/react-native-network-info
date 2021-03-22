@@ -96,9 +96,11 @@ public class RNNetworkInfo extends ReactContextBaseJavaModule {
                     String ipAddress = null;
 
                     for (InterfaceAddress address : getInetAddresses()) {
-                        if (!address.getAddress()
-                                .isLoopbackAddress()/* address.getAddress().toString().equalsIgnoreCase(ip) */) {
-                            ipAddress = address.getBroadcast().toString();
+                        if (!address.getAddress().isLoopbackAddress()/*address.getAddress().toString().equalsIgnoreCase(ip)*/) {
+                            InetAddress broadCast = address.getBroadcast();
+                            if (broadCast != null){
+                                ipAddress = broadCast.toString();
+                            }
                         }
                     }
                     promise.resolve(ipAddress);
