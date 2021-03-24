@@ -54,9 +54,17 @@ RCT_EXPORT_METHOD(getSSID:(RCTPromiseResolveBlock)resolve
                 break;
             }
         }
+        
+        if (SSID == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"SSIDNotFoundException"
+                                      reason:@"SSID Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
         resolve(SSID);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 #endif
@@ -85,9 +93,17 @@ RCT_EXPORT_METHOD(getBSSID:(RCTPromiseResolveBlock)resolve
                 CFRelease(networkDetails);
             }
         }
+        
+        if (BSSID == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"BSSIDNotFoundException"
+                                      reason:@"BSSID Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
         resolve(BSSID);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 #endif
@@ -126,11 +142,28 @@ RCT_EXPORT_METHOD(getBroadcast:(RCTPromiseResolveBlock)resolve
                 }
                 temp_addr = temp_addr->ifa_next;
             }
+        } else {
+            freeifaddrs(interfaces);
+
+            NSException* exception = [NSException
+                                      exceptionWithName:@"BroadcastNotFoundException"
+                                      reason:@"getifaddrs has been Not successful"
+                                      userInfo:nil];
+            @throw exception;
         }
+
         freeifaddrs(interfaces);
+
+        if (address == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"BroadcastNotFoundException"
+                                      reason:@"Broadcast Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
         resolve(address);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 
@@ -156,11 +189,28 @@ RCT_EXPORT_METHOD(getIPAddress:(RCTPromiseResolveBlock)resolve
                 }
                 temp_addr = temp_addr->ifa_next;
             }
+        } else {
+            freeifaddrs(interfaces);
+
+            NSException* exception = [NSException
+                                      exceptionWithName:@"IPAddressNotFoundException"
+                                      reason:@"getifaddrs has been Not successful"
+                                      userInfo:nil];
+            @throw exception;
         }
         freeifaddrs(interfaces);
+        
+        if (address == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"IPAddressNotFoundException"
+                                      reason:@"IPAddress Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
+
         resolve(address);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 
@@ -176,7 +226,7 @@ RCT_EXPORT_METHOD(getGatewayIPAddress:(RCTPromiseResolveBlock)resolve
     	}
         resolve(ipString);
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 
@@ -194,10 +244,18 @@ RCT_EXPORT_METHOD(getIPV4Address:(RCTPromiseResolveBlock)resolve
              address = addresses[key];
              if(address) *stop = YES;
          } ];
-        NSString *addressToReturn = address ? address : @"0.0.0.0";
-        resolve(addressToReturn);
+        
+        if (address) {
+            resolve(address);
+        }
+            NSException* exception = [NSException
+                                      exceptionWithName:@"IPV4AddressNotFoundException"
+                                      reason:@"IPV4Address Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 
@@ -219,10 +277,17 @@ RCT_EXPORT_METHOD(getWIFIIPV4Address:(RCTPromiseResolveBlock)resolve
              address = addresses[key];
              if(address) *stop = YES;
          } ];
-        NSString *addressToReturn = address ? address : @"0.0.0.0";
-        resolve(addressToReturn);
+         if(address){
+            resolve(address);
+         } else {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"WIFIIPV4AddressNotFoundException"
+                                      reason:@"WIFIIPV4Address Not Found"
+                                      userInfo:nil];
+            @throw exception;
+         }
     }@catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 
@@ -230,7 +295,7 @@ RCT_EXPORT_METHOD(getSubnet:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
     @try {
-        NSString *netmask = @"error";
+        NSString *netmask = NULL;
         struct ifaddrs *interfaces = NULL;
         struct ifaddrs *temp_addr = NULL;
         
@@ -257,11 +322,18 @@ RCT_EXPORT_METHOD(getSubnet:(RCTPromiseResolveBlock)resolve
             }
         }
         freeifaddrs(interfaces);
-        
-        NSString *addressToReturn = netmask ? netmask : @"0.0.0.0";
-        resolve(addressToReturn);
+
+        if (netmask == NULL) {
+            NSException* exception = [NSException
+                                      exceptionWithName:@"IPV4AddressNotFoundException"
+                                      reason:@"IPV4Address Not Found"
+                                      userInfo:nil];
+            @throw exception;
+        }
+
+        resolve(netmask);
     } @catch (NSException *exception) {
-        resolve(NULL);
+        reject(exception);
     }
 }
 

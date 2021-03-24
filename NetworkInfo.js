@@ -3,46 +3,56 @@
 import { NativeModules, Platform } from "react-native";
 const { RNNetworkInfo } = NativeModules;
 
+async function handleError(callback, fallback = null) {
+  try {
+    return await callback();
+  } catch (error) {
+    if (__DEV__) console.log(error);
+
+    return fallback;
+  }
+}
+
 const NetworkInfo = {
-  async getSSID() {
-    return await RNNetworkInfo.getSSID();
+  async getSSID(fallback) {
+    return await handleError(RNNetworkInfo.getSSID, fallback);
   },
 
-  async getBSSID() {
-    return await RNNetworkInfo.getBSSID();
+  async getBSSID(fallback) {
+    return await handleError(RNNetworkInfo.getBSSID, fallback);
   },
 
-  async getBroadcast() {
-    return await RNNetworkInfo.getBroadcast();
+  async getBroadcast(fallback) {
+    return await handleError(RNNetworkInfo.getBroadcast, fallback);
   },
 
-  async getIPAddress() {
-    return await RNNetworkInfo.getIPAddress();
+  async getIPAddress(fallback) {
+    return await handleError(RNNetworkInfo.getIPAddress, fallback);
   },
 
-  async getIPV4Address() {
-    const wifiIP = await RNNetworkInfo.getWIFIIPV4Address();
-    if (wifiIP && wifiIP !== '0.0.0.0') {
+  async getIPV4Address(fallback) {
+    const wifiIP = await handleError(RNNetworkInfo.getWIFIIPV4Address);
+    if (wifiIP) {
       return wifiIP;
     }
-    
-    return await RNNetworkInfo.getIPV4Address();
+
+    return await handleError(RNNetworkInfo.getIPV4Address, fallback);
   },
 
-  async getGatewayIPAddress() {
-    return await RNNetworkInfo.getGatewayIPAddress();
+  async getGatewayIPAddress(fallback) {
+    return await handleError(RNNetworkInfo.getGatewayIPAddress, fallback);
   },
 
-  async getSubnet() {
-    return await RNNetworkInfo.getSubnet();
+  async getSubnet(fallback) {
+    return await handleError(RNNetworkInfo.getSubnet, fallback);
   },
 
-  async getFrequency() {
+  async getFrequency(fallback) {
     if (Platform.OS !== 'android') {
-      return null;
+      return fallback;
     }
-    return await RNNetworkInfo.getFrequency();
-  }
+    return await handleError(RNNetworkInfo.getFrequency, fallback);
+  },
 };
 
 module.exports = { NetworkInfo };
